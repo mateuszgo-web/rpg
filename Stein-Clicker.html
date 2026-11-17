@@ -137,7 +137,12 @@ var IMG=[],MASK=[],PATHS=[],loaded=0;
 TEX.forEach(function(t,i){var im=new Image();im.onload=function(){var o=document.createElement('canvas');o.width=t.w;o.height=t.h;var og=o.getContext('2d');og.drawImage(im,0,0);var d=og.getImageData(0,0,t.w,t.h).data,m=[];for(var k=0;k<t.w*t.h;k++)m.push(d[k*4+3]>0?1:0);MASK[i]=m;loaded++;if(loaded===TEX.length)show()};im.src=t.u;IMG.push(im)});
 function curT(){return st.cu?2:st.t}
 function curHP(){return st.cu?100:TEX[st.t].hp}
-function curY(){return st.cu?1:TEX[st.t].y}
+function curY(){
+  if(st.cu)return 1;
+  var area=TEX[st.t].w*TEX[st.t].h*TEX[st.t].sc*TEX[st.t].sc;
+  var sizes=TEX.map(function(t){return t.w*t.h*t.sc*t.sc}).sort(function(a,b){return a-b});
+  return area===sizes[0]?1:area===sizes[sizes.length-1]?4:2;
+}
 function px(){return TEX[curT()].sc}
 function pickT(){var n;do{n=Math.floor(Math.random()*3)}while(n===st.t);return n}
 function drawTex(cv,i,copper){var g=cv.getContext('2d'),t=TEX[i],w=t.w*t.sc,h=t.h*t.sc,x=Math.round((256-w)/2),y=240-h;
