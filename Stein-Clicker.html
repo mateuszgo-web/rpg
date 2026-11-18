@@ -63,7 +63,7 @@ header h1,header p{color:#fff;text-shadow:2px 2px 0 rgba(0,35,80,.75)}
 .ic{display:inline-block;width:14px;height:14px;margin-right:8px;vertical-align:-2px;box-shadow:inset 2px 2px 0 rgba(255,255,255,.35),inset -2px -2px 0 rgba(0,0,0,.35)}
 .foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:12px;color:var(--dim)}
 .foot button{font:inherit;color:var(--ink);background:var(--slot);border:0;padding:6px 10px;cursor:pointer;box-shadow:inset 2px 2px 0 var(--lo),inset -2px -2px 0 var(--hi)}
-@media(prefers-reduced-motion:reduce){#water i{animation:none}.pop{animation:none;opacity:0}}
+@media(prefers-reduced-motion:reduce){#water i{animation:none}}
 .cop{display:block;font-size:18px;color:#8a3f12;min-height:1px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cop{color:#ff9a5c}}
 :root[data-theme="dark"] .cop{color:#ff9a5c}
@@ -105,15 +105,16 @@ header h1,header p{color:#fff;text-shadow:2px 2px 0 rgba(0,35,80,.75)}
 
 <script>
 (function(){
-var HP=100,YIELD=1,RM=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+// Abbau-Animationen sind das Spiel-Feedback und laufen immer (die OS-Einstellung "Bewegung reduzieren" hat sie am PC komplett abgeschaltet)
+var HP=100,YIELD=1,RM=false;
 // Schlagkraft: Hand 2 (50 Schläge), Spitzhacke 2,5 (40), Schaufel 4 (25)
 var REC=[
-{id:'pick',n:'Steinspitzhacke',d:'+20 % Abbaugeschwindigkeit (einmalig)',c:25,k:.4,once:1},
+{id:'pick',n:'Steinspitzhacke',d:'+20 % Abbaugeschwindigkeit (einmalig)',c:25,k:.4,once:1,up:'ipick'},
 {id:'furnace',n:'Steinofen',d:'+1 Stein pro Sekunde',c:60,s:1},
 {id:'shovel',n:'Steinschaufel',d:'+75 % Abbaugeschwindigkeit (einmalig)',c:120,k:1.5,once:1},
 {id:'anvil',n:'Steinamboss',d:'+6 Stein pro Sekunde',c:500,s:6},
 {id:'golem',n:'Steingolem',d:'+30 Stein pro Sekunde',c:3000,s:30},
-{id:'ipick',n:'Eisenspitzhacke',d:'Upgrade: +60 % statt +20 % Abbaugeschwindigkeit',fe:10,k:.8,once:1,req:'pick'}
+{id:'ipick',n:'Eisenspitzhacke',d:'Upgrade: +60 % statt +20 % Abbaugeschwindigkeit',fe:10,k:.8,once:1,req:'pick',hide:1}
 ];
 var KEY='stein-clicker-v3',st={stone:0,total:0,dmg:0,own:{},t:2};
 try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&typeof p.stone==='number')st=p;}}catch(e){}
@@ -124,6 +125,8 @@ function own(r){return st.own[r.id]||0}
 function cost(r){return r.once?r.c:Math.ceil(r.c*Math.pow(1.15,own(r)))}
 function reqOk(r){return !r.req||(st.own[r.req]||0)>0}
 function canBuy(r){return r.fe?((st.iron||0)>=r.fe&&reqOk(r)):st.stone>=cost(r)}
+// Ein Upgrade erscheint auf dem Knopf seines Vorgängers (z. B. Eisenspitzhacke auf dem Knopf der Steinspitzhacke)
+function cur(r){return r.up&&own(r)>0?REC.filter(function(q){return q.id===r.up})[0]:r}
 function dmgHit(){return REC.reduce(function(a,r){return a+(r.k||0)*(own(r)>0?1:0)},2)}
 function perSec(){return REC.reduce(function(a,r){return a+(r.s||0)*own(r)},0)}
 function toolName(){return own(REC[2])>0?'Steinschaufel':(st.own.ipick>0)?'Eisenspitzhacke':own(REC[0])>0?'Steinspitzhacke':'Hand'}
@@ -135,10 +138,13 @@ var cvS=document.getElementById('cv'),cvC=document.getElementById('cu'),cc=docum
 var STC=["#927e6a", "#684c3c", "#2a1d0d"],CUC=['#d8af93','#c49a7c','#a67c60','#8d8d8d','#6f6f6f','#e6c4a8'];
 var IMG=[],MASK=[],PATHS=[],loaded=0;
 TEX.forEach(function(t,i){var im=new Image();im.onload=function(){var o=document.createElement('canvas');o.width=t.w;o.height=t.h;var og=o.getContext('2d');og.drawImage(im,0,0);var d=og.getImageData(0,0,t.w,t.h).data,m=[];for(var k=0;k<t.w*t.h;k++)m.push(d[k*4+3]>0?1:0);MASK[i]=m;loaded++;if(loaded===TEX.length)show()};im.src=t.u;IMG.push(im)});
-function curT(){return st.cu?2:st.t}
-function curHP(){return st.cu?100:TEX[st.t].hp}
+function curT(){return st.cu?(st.ct==null?2:st.ct):st.t}
+// Schläge pro Block mit der Hand: klein 5, mittel 10, groß 20 (Eisenblock 20); Handschaden ist 2
+function sizeRank(i){var a=function(t){return t.w*t.h*t.sc*t.sc},m=a(TEX[i]),s=TEX.map(a).sort(function(x,y){return x-y});return m===s[0]?0:m===s[s.length-1]?2:1}
+var HITS=[5,10,20];
+function curHP(){return HITS[sizeRank(curT())]*2}
 function curY(){
-  if(st.cu)return 1;
+  if(st.cu)return [.5,1,2][sizeRank(curT())];
   var area=TEX[st.t].w*TEX[st.t].h*TEX[st.t].sc*TEX[st.t].sc;
   var sizes=TEX.map(function(t){return t.w*t.h*t.sc*t.sc}).sort(function(a,b){return a-b});
   return area===sizes[0]?1:area===sizes[sizes.length-1]?4:2;
@@ -165,46 +171,77 @@ function cracks(p){cc.clearRect(0,0,256,256);if(loaded<TEX.length)return;var i=c
 cc.fillStyle='#120b04';for(var k=0;k<n;k++)cc.fillRect(ox+pa[k][0]*t.sc,oy+pa[k][1]*t.sc,t.sc,t.sc)}
 
 // ---- Sprites ----
-var tl=document.getElementById('tool'),tx=tl.getContext('2d'),curTool='';
+var tl=document.getElementById('tool'),tx=tl.getContext('2d'),curTool='',curSpr='';
 function R(c,x,y,w,h){tx.fillStyle=c;tx.fillRect(x,y,w,h)}
+// Spitzhacken-Texturen (13x13 Pixel, Buchstabe = Farbe der Palette, . = durchsichtig)
+var SPR={
+Stone:{p:{A:'#494949',B:'#9a9a9a',C:'#898989',D:'#7f7f7f',E:'#493615',F:'#684e1e',G:'#181818',H:'#896727',I:'#281e0b'},r:[
+'....AAAAA....',
+'...ABCDDCAEF.',
+'....AGGGDDHI.',
+'........ECDG.',
+'.......EFIDCG',
+'......EHI.GDG',
+'.....EFI..GDG',
+'....EHI...GCG',
+'...EFI....GBG',
+'..EHI......G.',
+'.EFI.........',
+'EHI..........',
+'II...........']},
+Iron:{p:{A:'#444444',B:'#d8d8d8',C:'#ffffff',D:'#181818',E:'#c1c1c1',F:'#969696',G:'#493615',H:'#684e1e',I:'#281e0b',J:'#67290b',K:'#896727',L:'#a34b22',M:'#411805'},r:[
+'...AAAAAA....',
+'...ABCCCBAAA.',
+'....ADDECBFD.',
+'.......DFEED.',
+'.......AEAEFD',
+'......GEDDFBD',
+'.....GHI..DBD',
+'....JKI...DED',
+'...JLM....DFD',
+'..ALM......DD',
+'AAFD.........',
+'AED..........',
+'DDD..........']}};
 function sprite(t){tx.clearRect(0,0,16,16);
 if(t==='Hand'){R('#2a1d0d',2,3,9,9);R('#2a1d0d',1,4,1,7);R('#d6a77a',2,4,8,7);R('#ecc9a2',2,4,8,2);R('#b07f55',2,10,8,1);R('#b07f55',4,6,1,4);R('#b07f55',6,6,1,4);R('#b07f55',8,6,1,4);R('#2a1d0d',10,5,3,6);R('#d6a77a',10,6,3,4);R('#1f7f8c',13,3,3,10);R('#2fa6b4',13,4,3,8)}
-else{for(var i=0;i<=9;i++){R('#7a5230',2+i,14-i,1,1);R('#5c3d22',3+i,14-i,1,1)}
-for(var x=6;x<=15;x++){var y=3+Math.round((x-11)*(x-11)/10);R('#c4c4c4',x,y,1,1);R('#8e8e8e',x,y+1,1,1);R('#5f5f5f',x,y+2,1,1)}}}
+else{var d=SPR[t]||SPR.Stone;d.r.forEach(function(row,y){for(var x=0;x<row.length;x++){var c=row.charAt(x);if(c!=='.')R(d.p[c],2+x,2+y,1,1)}})}}
 
 var blk=document.getElementById('block'),arena=document.getElementById('arena'),stage=document.querySelector('.stage'),list=document.getElementById('list'),btns={};
 REC.forEach(function(r){
+if(r.hide)return;
 var b=document.createElement('button');b.className='rec';
 b.innerHTML='<b>'+r.n+'</b><span class="own"></span><small>'+r.d+'</small><span class="cost"></span>';
-b.onclick=function(){if(r.once&&own(r)>0)return;if(!canBuy(r))return;if(r.fe)st.iron-=r.fe;else st.stone-=cost(r);st.own[r.id]=own(r)+1;draw();save()};
+b.onclick=function(){var x=cur(r);if(x.once&&own(x)>0)return;if(!canBuy(x))return;if(x.fe)st.iron-=x.fe;else st.stone-=cost(x);st.own[x.id]=own(x)+1;draw();save()};
 list.appendChild(b);btns[r.id]=b;
 });
 
 // ---- Werkbank-Reiter (Materialien / Werkzeuge) ----
 function grp(r){return r.k?'t':'m'}
 var tabBtns={m:document.getElementById('tab-m'),t:document.getElementById('tab-t')},tabName={m:'Materialien',t:'Werkzeuge'};
-function renderTabs(){var g=st.tab||'t';REC.forEach(function(r){btns[r.id].hidden=grp(r)!==g});
-['m','t'].forEach(function(x){var on=x===g,af=!on&&REC.some(function(r){return grp(r)===x&&!(r.once&&own(r)>0)&&canBuy(r)});tabBtns[x].setAttribute('aria-selected',on?'true':'false');tabBtns[x].textContent=tabName[x]+(af?' ●':'')})}
+function renderTabs(){var g=st.tab||'t';REC.forEach(function(r){if(btns[r.id])btns[r.id].hidden=grp(r)!==g});
+['m','t'].forEach(function(x){var on=x===g,af=!on&&REC.some(function(r){if(r.hide)return false;var q=cur(r);return grp(r)===x&&!(q.once&&own(q)>0)&&canBuy(q)});tabBtns[x].setAttribute('aria-selected',on?'true':'false');tabBtns[x].textContent=tabName[x]+(af?' ●':'')})}
 function setTab(g){st.tab=g;renderTabs();save()}
 tabBtns.m.onclick=function(){setTab('m')};tabBtns.t.onclick=function(){setTab('t')};
 
 // ---- Materialien-Tabelle ----
-var MATS=[{n:'Stein',c:'#927e6a',a:function(){return st.stone},v:function(){return fmt(st.stone)}},{n:'Eisen',c:'#d8af93',a:function(){return st.iron||0},v:function(){return (st.iron||0).toLocaleString('de-DE')}}];
+var MATS=[{n:'Stein',c:'#927e6a',a:function(){return st.stone},v:function(){return fmt(st.stone)}},{n:'Eisen',c:'#d8af93',a:function(){return st.iron||0},v:function(){return fmt(st.iron||0)}}];
 var matBody=document.querySelector('#mats tbody');
 MATS.forEach(function(m){var tr=document.createElement('tr');tr.innerHTML='<td><i class="ic" style="background:'+m.c+'"></i>'+m.n+'</td><td></td>';m.tr=tr;m.val=tr.lastChild;matBody.appendChild(tr)});
 function renderMats(){MATS.forEach(function(m){m.tr.className=m.a()>=1?'':'zero';m.val.textContent=m.v()})}
 
 function draw(){
 var d=dmgHit(),t=toolName();
-if(t!==curTool){curTool=t;sprite(t==='Hand'?'Hand':'Pick')}
+var sk=t==='Hand'?'Hand':(st.own.ipick>0?'Iron':'Stone');curTool=t;if(sk!==curSpr){curSpr=sk;sprite(sk)}
 document.getElementById('stone').textContent=fmt(st.stone)+' Stein';
 document.getElementById('total').textContent=fmt(st.total);
 renderMats();renderTabs();
 document.getElementById('rates').textContent=t+' · '+Math.ceil(curHP()/d)+' Schläge pro Block\n'+fmt(curY())+(st.cu?' Eisen':' Stein')+' pro Block · '+perSec()+' pro Sekunde';
-REC.forEach(function(r){var b=btns[r.id],c=cost(r),o=own(r),done=r.once&&o>0;
-b.disabled=done||!canBuy(r);
-b.querySelector('.own').textContent=done?'✓':(o?'×'+o:'');
-b.querySelector('.cost').textContent=done?'Gecraftet':r.fe?(reqOk(r)?'Kosten: '+r.fe+' Eisen':'Benötigt: Steinspitzhacke'):'Kosten: '+fmt(c)+' Stein';});
+REC.forEach(function(r){if(r.hide)return;var b=btns[r.id],x=cur(r),c=cost(x),o=own(x),done=x.once&&o>0;
+if(b._n!==x.id){b._n=x.id;b.querySelector('b').textContent=x.n;b.querySelector('small').textContent=x.d}
+b.disabled=done||!canBuy(x);
+b.querySelector('.own').textContent=done?'✓':(x!==r?'⬆ Upgrade':(o?'×'+o:''));
+b.querySelector('.cost').textContent=done?'Gecraftet':x.fe?(reqOk(x)?'Kosten: '+x.fe+' Eisen':'Benötigt: Steinspitzhacke'):'Kosten: '+fmt(c)+' Stein';});
 document.getElementById('hint').textContent=st.cu?'Ein Eisenblock! Schlag zu.':(own(REC[0])>0&&!st.own.ipick&&(st.iron||0)>=10)?'Genug Eisen! Rüste deine Spitzhacke auf.':(own(REC[0])===0&&st.stone>=25)?'Genug Stein! Craft deine Steinspitzhacke.':(st.total===0?'Klicke den Block, um zu schlagen.':'');
 }
 var lastSave=0;
@@ -268,14 +305,14 @@ if(!raf){lastT=performance.now();raf=requestAnimationFrame(tick)}}
 function breakAnim(){if(RM)return;var s=px();blk.animate([{opacity:0,easing:ST},{opacity:0,offset:.72,easing:ST},{opacity:1,transform:'translateY(-'+3*s+'px)',offset:.72,easing:ST},{opacity:1,transform:'translateY(-'+s+'px)',offset:.86,easing:ST},{opacity:1,transform:'none'}],{duration:700})}
 
 function pop(t){var sr=stage.getBoundingClientRect(),br=blk.getBoundingClientRect(),s=document.createElement('span');s.className='pop';s.textContent=t;s.style.left=(br.left-sr.left+br.width/2-30)+'px';s.style.top=(br.top-sr.top+br.height/2-10)+'px';stage.appendChild(s);setTimeout(function(){s.remove()},850)}
-function show(){if(loaded<TEX.length)return;var c=!!st.cu;drawTex(cvS,st.t,0);if(c)drawTex(cvC,2,1);cvS.style.display=c?'none':'block';cvC.style.display=c?'block':'none';blk.classList.toggle('cu',c);cracks(st.dmg/curHP())}
+function show(){if(loaded<TEX.length)return;var c=!!st.cu;drawTex(cvS,st.t,0);if(c)drawTex(cvC,curT(),1);cvS.style.display=c?'none':'block';cvC.style.display=c?'block':'none';blk.classList.toggle('cu',c);cracks(st.dmg/curHP())}
 function hit(){
 st.dmg+=dmgHit();var broke=st.dmg>=curHP(),wasCu=!!st.cu,y=curY(),oT=curT();
-if(broke){st.dmg=0;if(wasCu){st.iron=(st.iron||0)+1;st.cu=0;st.t=pickT()}else{st.stone+=y;st.total+=y;if(Math.random()<.1)st.cu=1;else st.t=pickT()}}
+if(broke){st.dmg=0;if(wasCu){st.iron=(st.iron||0)+y;st.cu=0;st.t=pickT()}else{st.stone+=y;st.total+=y;if(Math.random()<.2){st.cu=1;st.ct=Math.floor(Math.random()*TEX.length)}else st.t=pickT()}}
 sfx(broke?(wasCu?'cubreak':'break'):(wasCu?'cu':'hit'));
 swing();draw();save();
 setTimeout(function(){impact(broke,wasCu,oT);cracks(st.dmg/curHP());
-if(broke){breakAnim();pop(wasCu?'+1 Eisen':'+'+fmt(y)+' Stein');setTimeout(show,RM?0:200)}},RM?0:90);
+if(broke){breakAnim();pop(wasCu?'+'+fmt(y)+' Eisen':'+'+fmt(y)+' Stein');setTimeout(show,RM?0:200)}},RM?0:90);
 }
 // Gedrückt halten = dauerhaft abbauen (Maus, Touch, Stift)
 var holdT=null;
