@@ -20,7 +20,7 @@ body{margin:0;background:var(--wa);color:var(--ink);font:16px/1.4 "Silkscreen",u
 @keyframes flow{to{background-position:var(--mx,-120px) var(--my,40px)}}
 main{max-width:1200px;margin:0 auto;padding:20px 16px 40px;display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
 header,.mats{grid-column:1/-1}
-@media(min-width:900px){main{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}.stage{position:sticky;top:12px}.storebody{max-height:calc(100vh - 260px);overflow-y:auto;overscroll-behavior:contain}}
+@media(min-width:900px){main{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}.store{position:sticky;top:12px}.storebody{max-height:calc(100vh - 260px);overflow-y:auto;overscroll-behavior:contain}}
 
 h1{font-size:28px;margin:0}
 h2{font-size:18px;margin:0 0 12px}
@@ -87,8 +87,8 @@ header h1,header p{color:#fff;text-shadow:2px 2px 0 rgba(0,35,80,.75)}
 .storehead h2{margin:0;color:#f6e6c4;text-shadow:2px 2px 0 #3a2814;font-size:20px;letter-spacing:1px}
 .store{padding:0;overflow:hidden}
 .storebody{padding:14px}
-.tabs{display:flex;margin:0;background:#3a2a18}
-.tabs button{flex:1 1 0;min-width:0;white-space:nowrap;font:inherit;font-size:12px;color:#e8d3a8;background:#5b4326;border:0;border-right:3px solid #2a1d0f;border-bottom:4px solid #2a1d0f;padding:12px 2px;cursor:pointer}
+.tabs{display:flex;flex-wrap:wrap;margin:0;background:#3a2a18}
+.tabs button{flex:1 1 auto;min-width:0;white-space:nowrap;font:inherit;font-size:12px;color:#e8d3a8;background:#5b4326;border:0;border-right:3px solid #2a1d0f;border-bottom:4px solid #2a1d0f;padding:12px 2px;cursor:pointer}
 .tabs button:last-child{border-right:0}
 .tabs button[aria-selected=true]{background:var(--panel);color:var(--ink);font-weight:700;border-bottom-color:var(--panel)}
 .tabs button:not([aria-selected=true]):hover{filter:brightness(1.12)}
@@ -96,7 +96,7 @@ header h1,header p{color:#fff;text-shadow:2px 2px 0 rgba(0,35,80,.75)}
 .ic{display:inline-block;width:14px;height:14px;margin-right:8px;vertical-align:-2px;box-shadow:inset 2px 2px 0 rgba(255,255,255,.35),inset -2px -2px 0 rgba(0,0,0,.35)}
 .foot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:0;padding:10px 14px;border-top:3px solid var(--lo);font-size:12px;color:var(--dim)}
 .foot button{font:inherit;color:var(--ink);background:var(--slot);border:0;padding:6px 10px;cursor:pointer;box-shadow:inset 2px 2px 0 var(--lo),inset -2px -2px 0 var(--hi)}
-#sell{display:grid;gap:10px}
+#sell,#forge{display:grid;gap:10px}
 #arts{display:grid;gap:10px}
 .artsum{display:grid;gap:4px}
 .artsum .sec{margin:0}
@@ -127,7 +127,7 @@ header h1,header p{color:#fff;text-shadow:2px 2px 0 rgba(0,35,80,.75)}
 #tip .chip.no{color:#ff8a7a}
 #tip .tag{color:#aaa}
 #tip .tm{color:#f2c230}
-#sell[hidden],#arts[hidden]{display:none}
+#sell[hidden],#arts[hidden],#forge[hidden]{display:none}
 .coinline{display:flex;align-items:center;gap:12px;margin:0;padding:10px 14px;background:var(--slot);box-shadow:inset 3px 3px 0 var(--lo),inset -3px -3px 0 var(--hi)}
 .coinline b{font-size:22px;display:block}
 .coinline small{display:block;color:var(--dim);font-size:12px;font-weight:400}
@@ -147,15 +147,68 @@ header h1,header p{color:#fff;text-shadow:2px 2px 0 rgba(0,35,80,.75)}
 #block.cu #cu{animation:glow 1.6s ease-in-out infinite alternate}
 @keyframes glow{from{filter:drop-shadow(0 0 4px rgba(216,175,147,.4))}to{filter:drop-shadow(0 0 16px rgba(235,200,170,.9))}}
 #block.cu.my #cu{animation:glowm 1.6s ease-in-out infinite alternate}
+#block.cu.ti #cu{animation:glowt 1.6s ease-in-out infinite alternate}
+@keyframes glowt{from{filter:drop-shadow(0 0 4px rgba(240,190,90,.45))}to{filter:drop-shadow(0 0 18px rgba(255,220,130,.95))}}
+.mic{width:22px;height:22px;image-rendering:pixelated;margin-right:6px;vertical-align:-5px}
 @keyframes glowm{from{filter:drop-shadow(0 0 4px rgba(60,200,240,.45))}to{filter:drop-shadow(0 0 18px rgba(120,240,255,.95))}}
-@media(prefers-reduced-motion:reduce){#block.cu #cu,#block.cu.my #cu{animation:none}}
+@media(prefers-reduced-motion:reduce){#block.cu #cu,#block.cu.my #cu,#block.cu.ti #cu{animation:none}}
+/* ---- Fabrikhalle ---- */
+.leftcol{display:grid;gap:14px;min-width:0;align-content:start}
+.factory{padding:0;overflow:hidden}
+.fhead{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;background:repeating-linear-gradient(180deg,#7b5a30 0 7px,#6d4f29 7px 8px);box-shadow:inset 0 -4px 0 rgba(0,0,0,.35)}
+.fhead h2{margin:0;color:#f6e6c4;text-shadow:2px 2px 0 #3a2814;font-size:18px;letter-spacing:1px}
+#ftotal{color:#f1dfb8;font-size:11px;text-align:right}
+#frows{display:grid;gap:3px;padding:6px;background:#1b1410}
+.frow{display:grid;grid-template-columns:178px minmax(0,1fr);min-height:66px;background:#241a12}
+.frow[hidden]{display:none}
+.flabel{display:flex;align-items:center;gap:8px;padding:6px 8px;background:linear-gradient(90deg,#4a3420,#2c1f13);color:#f6e6c4}
+.flabel .ico{flex:none}
+.flabel b{display:block;font-size:12px;line-height:1.15}
+.flabel small{display:block;font-size:10px;color:#cdb68a;margin-top:2px}
+.flabel>div{min-width:0}
+.fcount{flex:none;margin-left:auto;padding-left:4px;font-size:16px;font-weight:700;color:#fff;text-shadow:2px 2px 0 #000}
+.fstage{position:relative;height:66px;overflow:hidden;border-left:3px solid #0d0906;background-color:#4a4744;background-image:linear-gradient(rgba(0,0,0,.28) 2px,transparent 2px),linear-gradient(90deg,rgba(0,0,0,.22) 2px,transparent 2px);background-size:32px 16px}
+.f-i .fstage{background-color:#5e4a3a}
+.f-m .fstage{background-color:#1c2c5a;background-image:linear-gradient(rgba(120,220,255,.16) 2px,transparent 2px),linear-gradient(90deg,rgba(120,220,255,.1) 2px,transparent 2px),radial-gradient(ellipse at 50% 120%,rgba(90,220,255,.25),transparent 70%)}
+.fstage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:9px;background:rgba(0,0,0,.4);box-shadow:0 -2px 0 rgba(255,255,255,.08)}
+.fu{position:absolute;bottom:7px;width:38px;height:38px;background:var(--ic) center/100% 100% no-repeat;image-rendering:pixelated;transform-origin:50% 100%;animation:1s ease-in-out infinite}
+.a-flick .fu{animation-name:flick}.a-hit .fu{animation-name:hit}.a-sway .fu{animation-name:sway}.a-shake .fu{animation-name:shake}.a-pulse .fu{animation-name:pulse}
+@keyframes flick{0%,100%{filter:brightness(1)}50%{filter:brightness(1.4) saturate(1.2);transform:translateY(-1px)}}
+@keyframes hit{0%,55%,100%{transform:translateY(0) scaleY(1)}68%{transform:translateY(3px) scaleY(.88)}82%{transform:translateY(-4px) scaleY(1.05)}}
+@keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg) translateY(-2px)}}
+@keyframes shake{0%,100%{transform:translateX(-1px) rotate(0)}25%{transform:translateX(2px) rotate(2deg)}75%{transform:translateX(-2px) rotate(-2deg)}}
+@keyframes pulse{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.08);filter:brightness(1.45) drop-shadow(0 0 6px #7ff)}}
+.fu.new{animation:drop .6s cubic-bezier(.3,1.6,.5,1) 1!important}
+@keyframes drop{from{transform:translateY(-60px) scale(.6);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.fu{animation:none}.fu.new{animation:none!important}}
+@media(max-width:480px){.frow{grid-template-columns:1fr}.flabel{padding:5px 8px}}
+/* ---- Menü-Politur ---- */
+header h1{display:flex;align-items:center;gap:12px;font-size:34px;letter-spacing:1px;text-shadow:3px 3px 0 rgba(0,35,80,.75)}
+.logo{width:40px;height:40px;image-rendering:pixelated;filter:drop-shadow(2px 2px 0 rgba(0,35,80,.75))}
+.tabs button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px 9px}
+.tic{width:28px;height:28px;image-rendering:pixelated}
+.tabs button[aria-selected=true] .tic{filter:drop-shadow(0 0 4px rgba(255,220,130,.85))}
+.slot,.sellrow .slot{background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.2),transparent 72%),var(--panel)}
+.rec .own{font-size:26px;opacity:.45;letter-spacing:-1px}
+.rec.can .own{opacity:.85}
+.rec.can{animation:canGlow 2.2s ease-in-out infinite}
+@keyframes canGlow{0%,100%{box-shadow:inset 3px 3px 0 var(--lo),inset -3px -3px 0 var(--hi),0 0 0 0 rgba(123,211,111,0)}50%{box-shadow:inset 3px 3px 0 var(--lo),inset -3px -3px 0 var(--hi),0 0 12px 1px rgba(123,211,111,.5)}}
+@media(prefers-reduced-motion:reduce){.rec.can{animation:none}}
+.qbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px}
+.qbar[hidden]{display:none}
+.qbar span{font-size:12px;color:var(--dim);margin-right:2px}
+.qbar button{font:inherit;font-size:12px;color:var(--ink);background:var(--panel);border:0;padding:7px 12px;cursor:pointer;box-shadow:inset 2px 2px 0 var(--hi),inset -2px -2px 0 var(--lo)}
+.qbar button[aria-pressed=true]{background:var(--ok);color:#fff;box-shadow:inset 2px 2px 0 rgba(255,255,255,.3),inset -2px -2px 0 rgba(0,0,0,.4)}
+.qbar button:focus-visible{outline:3px solid var(--ok);outline-offset:2px}
+.mps{display:block;font-size:11px;font-weight:400;color:var(--ok);min-height:13px}
+.mv{display:block}
 </style>
 </head>
 <body>
 <div id="water" aria-hidden="true"><i></i><i></i><i></i></div>
 <main>
 <header>
-<h1>Stein-Clicker</h1>
+<h1><canvas class="logo" id="logo" width="16" height="16" aria-hidden="true"></canvas>Stein-Clicker</h1>
 <p>Baue Stein ab, craft Werkzeuge, verkaufe Ressourcen und sammle Artefakte.</p>
 </header>
 
@@ -163,6 +216,7 @@ header h1,header p{color:#fff;text-shadow:2px 2px 0 rgba(0,35,80,.75)}
 <table id="mats"><tbody></tbody></table>
 </section>
 
+<div class="leftcol">
 <section class="panel stage" aria-label="Abbauen">
 <div class="count"><span id="stone">0</span></div>
 <div class="rates" id="rates"></div>
@@ -173,12 +227,20 @@ header h1,header p{color:#fff;text-shadow:2px 2px 0 rgba(0,35,80,.75)}
 <p class="hint" id="hint"></p>
 </section>
 
+<section class="panel factory" id="factory" aria-label="Fabrikhalle" hidden>
+<div class="fhead"><h2>Fabrikhalle</h2><span id="ftotal"></span></div>
+<div id="frows"></div>
+</section>
+</div>
+
 <section class="panel store" aria-label="Werkbank">
 <div class="storehead"><h2>Werkbank</h2></div>
-<div class="tabs" role="tablist"><button role="tab" id="tab-t" aria-selected="true">Werkzeuge</button><button role="tab" id="tab-m" aria-selected="false">Maschinen</button><button role="tab" id="tab-s" aria-selected="false">Verkaufen</button><button role="tab" id="tab-a" aria-selected="false">Artefakte</button></div>
+<div class="tabs" role="tablist"><button role="tab" id="tab-t" aria-selected="true"><canvas class="tic" width="16" height="16" aria-hidden="true"></canvas><span class="tl">Werkzeuge</span></button><button role="tab" id="tab-m" aria-selected="false"><canvas class="tic" width="16" height="16" aria-hidden="true"></canvas><span class="tl">Maschinen</span></button><button role="tab" id="tab-f" aria-selected="false"><canvas class="tic" width="16" height="16" aria-hidden="true"></canvas><span class="tl">Schmiede</span></button><button role="tab" id="tab-s" aria-selected="false"><canvas class="tic" width="16" height="16" aria-hidden="true"></canvas><span class="tl">Verkaufen</span></button><button role="tab" id="tab-a" aria-selected="false"><canvas class="tic" width="16" height="16" aria-hidden="true"></canvas><span class="tl">Artefakte</span></button></div>
 <div class="storebody">
 <p class="intro" id="intro"></p>
+<div id="qbar" class="qbar" hidden></div>
 <div id="list" role="tabpanel"></div>
+<div id="forge" role="tabpanel" hidden></div>
 <div id="sell" role="tabpanel" hidden></div>
 <div id="arts" role="tabpanel" hidden></div>
 </div>
@@ -192,67 +254,87 @@ header h1,header p{color:#fff;text-shadow:2px 2px 0 rgba(0,35,80,.75)}
 var HP=100,YIELD=1,RM=false;
 // Schlagkraft: Hand 2 (50 Schläge), Spitzhacke 2,5 (40)
 var REC=[
-{id:'pick',n:'Steinspitzhacke',d:'+20 % Abbaugeschwindigkeit (einmalig)',c:25,k:.4,once:1,up:'ipick'},
+// k = Schaden pro Schlag (Hand: 2) · s/gi/gm = Stein/Eisen/Mythril pro Sekunde · Kosten: c Stein, fe Eisen, my Mythril, rf Refined Mythril (Maschinen werden pro Stück 15 % teurer)
+{id:'pick',n:'Steinspitzhacke',d:'+1 Schaden pro Schlag (Hand: 2)',c:25,k:1,once:1,up:'ipick'},
 {id:'furnace',n:'Steinofen',d:'+1 Stein pro Sekunde',c:60,s:1},
 {id:'anvil',n:'Steinamboss',d:'+6 Stein pro Sekunde',c:500,s:6},
 {id:'golem',n:'Steingolem',d:'+30 Stein pro Sekunde',c:3000,s:30},
-{id:'ipick',n:'Eisenspitzhacke',d:'Upgrade: +60 % statt +20 % Abbaugeschwindigkeit',fe:10,k:.8,once:1,req:'pick',hide:1},
-{id:'m1',n:'Fractured Mythril Pickaxe',d:'+40 % Abbaugeschwindigkeit (Stufe 1/4)',my:3,k:.8,once:1,up:'m2'},
-{id:'m2',n:'Bandaged Mythril Pickaxe',d:'Upgrade (Stufe 2/4): weitere +40 %',my:6,k:.8,once:1,req:'m1',hide:1,up:'m3'},
-{id:'m3',n:'Mythril Pickaxe',d:'Upgrade (Stufe 3/4): weitere +60 %',my:12,k:1.2,once:1,req:'m2',hide:1,up:'m4'},
-{id:'m4',n:'Refined Mythril Pickaxe',d:'Upgrade (Stufe 4/4): weitere +80 %',my:25,k:1.6,once:1,req:'m3',hide:1}
+{id:'drill_fe',n:'Eisenbohrer',d:'+0,4 Eisen pro Sekunde',c:2500,fe:5,gi:.4},
+{id:'mine_fe',n:'Eisenmine',d:'+3 Eisen pro Sekunde',c:20000,fe:40,gi:3},
+{id:'drill_my',n:'Mythril-Bohrer',d:'+0,1 Mythril pro Sekunde',fe:120,my:8,gm:.1},
+{id:'mine_my',n:'Mythril-Mine',d:'+0,6 Mythril pro Sekunde',fe:500,my:50,gm:.6},
+{id:'reactor_my',n:'Mythril-Reaktor',d:'+3 Mythril pro Sekunde',fe:2000,my:300,gm:3},
+{id:'fab_my',n:'Mythril-Fabrik',d:'+16 Mythril pro Sekunde',my:2500,rf:4,ti:300,gm:16},
+{id:'ipick',n:'Eisenspitzhacke',d:'Upgrade: weitere +2 Schaden pro Schlag',fe:10,k:2,once:1,req:'pick',hide:1,up:'cpick'},
+{id:'cpick',n:'Compact Iron Pickaxe',d:'Upgrade: weitere +2 Schaden pro Schlag · Extra-Erz ×1,25',fe:60,k:2,once:1,req:'ipick',hide:1},
+{id:'m1',n:'Fractured Mythril Pickaxe',d:'+3 Schaden pro Schlag (Stufe 1/4) · Extra-Erz ×1,5',my:10,k:3,once:1,up:'m2'},
+{id:'m2',n:'Bandaged Mythril Pickaxe',d:'Upgrade (Stufe 2/4): weitere +4 Schaden · Extra-Erz ×3',rf:1,k:4,once:1,req:'m1',hide:1,up:'m3'},
+{id:'m3',n:'Mythril Pickaxe',d:'Upgrade (Stufe 3/4): weitere +6 Schaden · Extra-Erz ×4 · schaltet Titanium frei (×4)',rf:32,k:6,once:1,req:'m2',hide:1,up:'m4'},
+{id:'m4',n:'Refined Mythril Pickaxe',d:'Upgrade (Stufe 4/4): weitere +9 Schaden · Extra-Erz ×5 · Titanium ×8',rf:128,k:9,once:1,req:'m3',hide:1}
 ];
 // Artefakte: kaufen (Münzen) oder craften (Materialien), danach Stufe für Stufe upgraden
 // t = Bonus-Art (speed = Mining Speed, luck = Mining Luck), per = Bonus in % pro Stufe, lv = Kosten je Stufe (c Münzen, s Stein, fe Eisen, my Mythril)
 var ART=[
-{id:'a_coin',n:'Glücksmünze',t:'luck',per:8,how:'buy',col:'#f2c230',lv:[{c:40},{c:120},{c:350},{c:900},{c:2200}]},
+{id:'a_coin',n:'Glücksmünze',t:'luck',per:12,how:'buy',col:'#f2c230',lv:[{c:40},{c:120},{c:350},{c:900},{c:2200}]},
 {id:'a_glove',n:'Eilhandschuh',t:'speed',per:10,how:'buy',col:'#e0e0e0',lv:[{c:60},{c:180},{c:500},{c:1300},{c:3000}]},
-{id:'a_clover',n:'Eisenkleeblatt',t:'luck',per:12,how:'craft',col:'#d8af93',lv:[{s:150,fe:5},{s:400,fe:10},{s:1000,fe:20},{s:2500,fe:35}]},
+{id:'a_clover',n:'Eisenkleeblatt',t:'luck',per:20,how:'craft',col:'#d8af93',lv:[{s:150,fe:5},{s:400,fe:10},{s:1000,fe:20},{s:2500,fe:35}]},
 {id:'a_ring',n:'Eisenring',t:'speed',per:15,how:'craft',col:'#a67c60',lv:[{s:200,fe:6},{s:500,fe:12},{s:1200,fe:24},{s:3000,fe:40}]},
-{id:'a_amulet',n:'Mythril-Amulett',t:'luck',per:25,how:'craft',col:'#4fd6e8',lv:[{fe:10,my:2},{fe:20,my:5},{fe:40,my:10}]},
-{id:'a_crystal',n:'Mythril-Kristall',t:'speed',per:35,how:'craft',col:'#2b6fd0',lv:[{fe:12,my:3},{fe:25,my:6},{fe:45,my:12}]}
+{id:'a_amulet',n:'Mythril-Amulett',t:'luck',per:48,how:'craft',col:'#4fd6e8',lv:[{fe:10,my:5},{fe:25,my:40},{fe:50,my:200}]},
+{id:'a_crystal',n:'Mythril-Kristall',t:'speed',per:40,how:'craft',col:'#2b6fd0',lv:[{fe:12,my:8},{fe:30,my:60},{fe:60,my:300}]},
+{id:'a_tluck',n:'Titan-Talisman',t:'luck',per:120,how:'craft',col:'#e9b872',lv:[{ti:100,my:100},{ti:400,my:500},{ti:1500,rf:3}]},
+{id:'a_tspeed',n:'Titan-Handschuh',t:'speed',per:80,how:'craft',col:'#efb775',lv:[{ti:150,my:150},{ti:600,my:600},{ti:2000,rf:4}]}
 ];
 // Verkaufspreise (Münzen pro Stück)
-var SELL=[{k:'stone',n:'Stein',p:1,c:'#927e6a'},{k:'iron',n:'Eisen',p:20,c:'#d8af93'},{k:'myth',n:'Mythril',p:100,c:'#4fd6e8'}];
+var SELL=[{k:'stone',n:'Stein',p:1,c:'#927e6a'},{k:'iron',n:'Eisen',p:20,c:'#d8af93'},{k:'myth',n:'Mythril',p:100,c:'#4fd6e8'},{k:'ti',n:'Titanium',p:150,c:'#e9b872'}];
 var KEY='stein-clicker-v3',st={stone:0,total:0,dmg:0,own:{},t:2};
 try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&typeof p.stone==='number')st=p;}}catch(e){}
 if(!st.own)st.own={};if(!st.art)st.art={};if(!st.dmg)st.dmg=0;if(st.t==null)st.t=2;
 if(st.copper){st.iron=(st.iron||0)+st.copper}delete st.copper;
 if(st.own.shovel){st.stone+=120;delete st.own.shovel}
+if(st.cu===3&&!(st.own.m3>0))st.cu=0;
 function fmt(n){return (Math.floor(n*10+1e-9)/10).toLocaleString('de-DE',{maximumFractionDigits:1})}
 function own(r){return st.own[r.id]||0}
-function cost(r){return r.once?r.c:Math.ceil(r.c*Math.pow(1.15,own(r)))}
+function costOf(r,n){var f=r.once?1:Math.pow(1.15,own(r));if(n>1)f*=(Math.pow(1.15,n)-1)/.15;var o={};if(r.c)o.s=Math.ceil(r.c*f);if(r.fe)o.fe=Math.ceil(r.fe*f);if(r.my)o.my=Math.ceil(r.my*f);if(r.rf)o.rf=Math.ceil(r.rf*f);if(r.ti)o.ti=Math.ceil(r.ti*f);return o}
 function reqOk(r){return !r.req||(st.own[r.req]||0)>0}
-function canBuy(r){return r.fe?((st.iron||0)>=r.fe&&reqOk(r)):r.my?((st.myth||0)>=r.my&&reqOk(r)):st.stone>=cost(r)}
+function canBuy(r,n){return reqOk(r)&&canPay(costOf(r,n))}
+function qtyFor(r){if(r.once||r.k)return 1;var q=st.bq||1;if(q!=='max')return q;var n=0;while(n<5000&&canPay(costOf(r,n+1)))n++;return Math.max(1,n)}
 // Ein Upgrade erscheint auf dem Knopf seines Vorgängers (z. B. Eisenspitzhacke auf dem Knopf der Steinspitzhacke)
 function cur(r){var x=r;while(x.up&&own(x)>0)x=REC.filter(function(q){return q.id===x.up})[0];return x}
 function artLv(a){return (st.art&&st.art[a.id])||0}
 function artPct(t){return ART.reduce(function(s,a){return a.t===t?s+a.per*artLv(a):s},0)}
 function luck(){return artPct('luck')/100}
-function oreCh(){return Math.min(.6,.25+luck()*.1)}
-function myCh(){return (st.own&&st.own.ipick>0)?.05:0}
-function canPay(c){return (st.coins||0)>=(c.c||0)&&st.stone>=(c.s||0)&&(st.iron||0)>=(c.fe||0)&&(st.myth||0)>=(c.my||0)}
-function pay(c){st.coins=(st.coins||0)-(c.c||0);st.stone-=(c.s||0);st.iron=(st.iron||0)-(c.fe||0);st.myth=(st.myth||0)-(c.my||0)}
-function costStr(c){var q=[];if(c.c)q.push(fmt(c.c)+' Münzen');if(c.s)q.push(fmt(c.s)+' Stein');if(c.fe)q.push(c.fe+' Eisen');if(c.my)q.push(c.my+' Mythril');return q.join(' + ')}
+function oreCh(){return Math.min(.6,.4+luck()*.02)}
+function tiMult(){var o=st.own||{};return o.m4>0?8:o.m3>0?4:0}
+function oreMult(){var o=st.own||{};return o.m4>0?5:o.m3>0?4:o.m2>0?3:o.m1>0?1.5:o.cpick>0?1.25:1}
+function fm2(n){return (Math.round(n*100)/100).toLocaleString('de-DE')}
+function tiCh(){return tiMult()>0?.06:0}
+function myCh(){return (st.own&&st.own.ipick>0)?.12:0}
+function canPay(c){return (st.coins||0)>=(c.c||0)&&st.stone+1e-6>=(c.s||0)&&(st.iron||0)+1e-6>=(c.fe||0)&&(st.myth||0)+1e-6>=(c.my||0)&&(st.rf||0)>=(c.rf||0)&&(st.ti||0)+1e-6>=(c.ti||0)}
+function pay(c){st.coins=(st.coins||0)-(c.c||0);st.stone=Math.max(0,st.stone-(c.s||0));st.iron=Math.max(0,(st.iron||0)-(c.fe||0));st.myth=Math.max(0,(st.myth||0)-(c.my||0));st.rf=(st.rf||0)-(c.rf||0);st.ti=Math.max(0,(st.ti||0)-(c.ti||0))}
+function costStr(c){var q=[];if(c.c)q.push(fmt(c.c)+' Münzen');if(c.s)q.push(fmt(c.s)+' Stein');if(c.fe)q.push(c.fe+' Eisen');if(c.my)q.push(c.my+' Mythril');if(c.rf)q.push(c.rf+' Refined Mythril');if(c.ti)q.push(c.ti+' Titanium');return q.join(' + ')}
 function artBuyable(a){var l=artLv(a);return l<a.lv.length&&canPay(a.lv[l])}
 function dmgHit(){return REC.reduce(function(a,r){return a+(r.k||0)*(own(r)>0?1:0)},2)*(1+artPct('speed')/100)}
-function perSec(){return REC.reduce(function(a,r){return a+(r.s||0)*own(r)},0)}
-function toolName(){var MN=['Fractured Mythril Pickaxe','Bandaged Mythril Pickaxe','Mythril Pickaxe','Refined Mythril Pickaxe'];for(var i=4;i>0;i--)if(st.own['m'+i]>0)return MN[i-1];return (st.own.ipick>0)?'Eisenspitzhacke':own(REC[0])>0?'Steinspitzhacke':'Hand'}
+function perRes(k){return REC.reduce(function(a,r){return a+(r[k]||0)*own(r)},0)}
+function perSec(){return perRes('s')}
+function fmtR(n){return n>=1?fmt(n):(Math.round(n*100)/100).toLocaleString('de-DE')}
+function psText(){var a=perRes('s'),b=perRes('gi'),m=perRes('gm'),q=[];if(a)q.push(fmtR(a)+' Stein');if(b)q.push(fmtR(b)+' Eisen');if(m)q.push(fmtR(m)+' Mythril');return q.join(' · ')}
+function toolName(){var MN=['Fractured Mythril Pickaxe','Bandaged Mythril Pickaxe','Mythril Pickaxe','Refined Mythril Pickaxe'];for(var i=4;i>0;i--)if(st.own['m'+i]>0)return MN[i-1];return (st.own.cpick>0)?'Compact Iron Pickaxe':(st.own.ipick>0)?'Eisenspitzhacke':own(REC[0])>0?'Steinspitzhacke':'Hand'}
 
 // ---- Stein-Texturen (bereinigt, echtes Pixelraster) ----
 var TEX=[{"u":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAABsklEQVR4nKVXsZGEMAw0zKdfwjdAgGcogE4IyCjpMgI6oQBmREADV8IVwAe8eVmWZAFKGIylldZr2RTOYNXP947ft/ensPhp9mUBbb0no3AmcjcJFTiAzgDReJzIvSTEiRwoBqyaOpq/LWs0N5dElmoMGsC2ZU0T/fsWnq9x2jXw0grMgWg29F0iykvArfcuFZdcNR5vvRfBWaqxkqXqLFVXTZ0IM5hasSX4XZ9La8zRm5snrXVEtSYG5+zVWOadFYd1xWLiKnwylgDzbZE3TixchVjhHN0lBp0BRBU6d1TReu9e48R+u2LnGkuAIaCWkOYnJWRumUPfRUG3ZY0oDtTiZ2pwtlHTdqJBtMYggdIxEbhqanVbDH2X0Hil4STA+BQKwaR1utrZsLpvUY2Nq9qi8HJ7f4oZwOEtpTk+oRfbeVDTGwelnILjb7KKeXuN0z/VtPIQkDMLnaaWyYFbGkbYzxxQjoFEXBQ8l7m27TRfVtWUdhpAaqNXqlavoLlTCwtRAuOEOAPovfroq8eFnSYwA6C7M+yYHQxEWQl+5pt/7v+JY4cTaPB7/POlJUfBsP0CqSQuUSdcZUwAAAAASUVORK5CYII=","w":30,"h":30,"sc":8,"y":2,"hp":200},{"u":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAABcklEQVR4nK2WsXGEMBBFPwypS3ADF1gzLoBOHDhzSWQEdEIBzIiABq6EKwAHnj1Ly1+dhNiIY7R6fP3d1TUgcXt/29n77f5o2PuS6Bisd85Y7vdaaJQssNn7aFHvHG6fHwCAYZyqlLY5sCuj0zANEGUAsC0r3aTE86eHAhPAtqwRTOD6BFIfyzx/AkOYVmaFhvGcGNqSFebRJeEExt51gJy1pz6EUVuhAGkLedZHxGC6Zy0bwtyo8eMN/R4WSEpZjt8Sh0mTAzBzSGXroEVzBgTkKaUqrEYGjsrFx1T/Av8+Fg5vQPeVrvDZ+6TSCKjnaW4zC7R3Dr1zSS/N4W3BrI22+6ORXD3+KLAkfr6/qM8CFZUspwXsq+lMhEpZRB5KsbwyPgcqhaT36cKqrIFY0ANQHq6EhdBhnPbwNx1tr+Al15ceFMVVui0rZu9PX1MHYOrra2EA0FijTB/rME5/0Csu4BDK/gzVqjoABWotugoGAL/JVgj0aiifZwAAAABJRU5ErkJggg==","w":28,"h":28,"sc":7,"y":0.5,"hp":50},{"u":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAaCAYAAACkVDyJAAABrElEQVR4nK1Wy42EMAw1aK5bwjbAASQKmE44cKMkbhzoJAUgmQMNUAIFsAfkjOPYITM7TxppAkme/fyjgExUvz+nfLbtR5F7nvDIJXs2jfIGz3eJbzdysqqt/fNtWf16nOZs0jKHzCEGZAAADtH/H/pOlfwtQk6m4dk0ME5zsM4hVQntmF0gOYe+82uAPE+TknLvtmX1Pylv1dZ+752nEaEmJfdWknGQxCnSoCzu4qYlDwdJ/AKeMns9oSTjXlkGECiGOSgkmZUsQYxEPXqjhffbsoJDDGo0kJRfZlmteUuGagl1OfCS9mF1EocYxYTIZELFsQsN4VB76TjN0SVkjIyxJiM9D++4vPRl4RCvnrisZhyrtjbf8Xu0OiWYMfwEqWylWJrjSUsAiaqtPYlWTnKvQww9pENVW/vLtBLgStA+Hq+UseW2H0Wq/ngP5UbRWpMxpYwvfLJcepzqOHK/NaBp7RCh4HWoXSilpYND30Xz8M7YbT+KKGmoI/Buzy21Pyswmg7BeKNOc/2xP4bu5p+88A4lbZYHKJmI9FtITnyL9D8GZMnwrY9gAIA/eXJNKD91P9YAAAAASUVORK5CYII=","w":28,"h":26,"sc":7,"y":1,"hp":100}];
 var seed=11;function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647}
 var cvS=document.getElementById('cv'),cvC=document.getElementById('cu'),cc=document.getElementById('cr').getContext('2d');
-var STC=["#927e6a", "#684c3c", "#2a1d0d"],CUC=['#d8af93','#c49a7c','#a67c60','#8d8d8d','#6f6f6f','#e6c4a8'],MYC=['#7ef2ec','#3fb5e8','#2b6fd0','#9ff8ff','#1d3f9a','#d4fffc'];
+var STC=["#927e6a", "#684c3c", "#2a1d0d"],CUC=['#d8af93','#c49a7c','#a67c60','#8d8d8d','#6f6f6f','#e6c4a8'],MYC=['#7ef2ec','#3fb5e8','#2b6fd0','#9ff8ff','#1d3f9a','#d4fffc'],TIC=['#f4d9a0','#efb775','#e0a050','#fff2c2','#b8803c','#efd8a1'];
 var IMG=[],MASK=[],PATHS=[],loaded=0;
 TEX.forEach(function(t,i){var im=new Image();im.onload=function(){var o=document.createElement('canvas');o.width=t.w;o.height=t.h;var og=o.getContext('2d');og.drawImage(im,0,0);var d=og.getImageData(0,0,t.w,t.h).data,m=[];for(var k=0;k<t.w*t.h;k++)m.push(d[k*4+3]>0?1:0);MASK[i]=m;loaded++;if(loaded===TEX.length)show()};im.src=t.u;IMG.push(im)});
 function curT(){return st.cu?(st.ct==null?2:st.ct):st.t}
 // Schläge pro Block mit der Hand: klein 5, mittel 10, groß 20 (Eisenblock 20); Handschaden ist 2
 function sizeRank(i){var a=function(t){return t.w*t.h*t.sc*t.sc},m=a(TEX[i]),s=TEX.map(a).sort(function(x,y){return x-y});return m===s[0]?0:m===s[s.length-1]?2:1}
 var HITS=[5,10,20];
-function curHP(){return HITS[sizeRank(curT())]*2}
+function curHP(){return HITS[sizeRank(curT())]*2*[1,2,4,8][st.cu||0]}  // Stein ×1, Eisen ×2, Mythril ×4, Titanium ×8
 function curY(){
-  if(st.cu)return [.5,1,2][sizeRank(curT())];
+  if(st.cu===3)return [1,2,4][sizeRank(curT())]*tiMult();
+  if(st.cu)return [1,2,4][sizeRank(curT())]*oreMult();
   var area=TEX[st.t].w*TEX[st.t].h*TEX[st.t].sc*TEX[st.t].sc;
   var sizes=TEX.map(function(t){return t.w*t.h*t.sc*t.sc}).sort(function(a,b){return a-b});
   return area===sizes[0]?1:area===sizes[sizes.length-1]?4:2;
@@ -265,9 +347,9 @@ if(!copper){g.drawImage(IMG[i],x,y,w,h);return}
 var o=document.createElement('canvas');o.width=t.w;o.height=t.h;var og=o.getContext('2d');og.drawImage(IMG[i],0,0);
 var d=og.getImageData(0,0,t.w,t.h),p=d.data;
 for(var k=0;k<p.length;k+=4){if(!p[k+3])continue;var l=(p[k]*.3+p[k+1]*.59+p[k+2]*.11)/255,u=Math.min(1,Math.max(0,(l-.1)*1.5)),pat=u>.45&&((k/4*2654435761)>>>0)%100<16;
-if(copper===2){p[k]=pat?130:24+u*60;p[k+1]=pat?245:44+u*130;p[k+2]=pat?236:96+u*150}else{p[k]=pat?216:60+u*130;p[k+1]=pat?175:60+u*125;p[k+2]=pat?147:64+u*118}}
+if(copper===3){p[k]=pat?255:112+u*138;p[k+1]=pat?236:84+u*120;p[k+2]=pat?170:44+u*80}else if(copper===2){p[k]=pat?130:24+u*60;p[k+1]=pat?245:44+u*130;p[k+2]=pat?236:96+u*150}else{p[k]=pat?216:60+u*130;p[k+1]=pat?175:60+u*125;p[k+2]=pat?147:64+u*118}}
 og.putImageData(d,0,0);g.drawImage(o,x,y,w,h);
-g.fillStyle=copper===2?'#c9fffb':'#fff';var s=t.sc;[[.3,.3],[.68,.45],[.45,.72],[.6,.15]].forEach(function(q){var sx=Math.round((x+w*q[0])/s)*s,sy=Math.round((y+h*q[1])/s)*s;g.fillRect(sx,sy-2*s,s,s);g.fillRect(sx-s,sy-s,3*s,s);g.fillRect(sx-2*s,sy,5*s,s);g.fillRect(sx-s,sy+s,3*s,s);g.fillRect(sx,sy+2*s,s,s)})}
+g.fillStyle=copper===3?'#fff2c2':copper===2?'#c9fffb':'#fff';var s=t.sc;[[.3,.3],[.68,.45],[.45,.72],[.6,.15]].forEach(function(q){var sx=Math.round((x+w*q[0])/s)*s,sy=Math.round((y+h*q[1])/s)*s;g.fillRect(sx,sy-2*s,s,s);g.fillRect(sx-s,sy-s,3*s,s);g.fillRect(sx-2*s,sy,5*s,s);g.fillRect(sx-s,sy+s,3*s,s);g.fillRect(sx,sy+2*s,s,s)})}
 
 // Risse im Pixelraster der Textur
 function mkPath(i){var t=TEX[i],m=MASK[i],cells=[],out=[],seen={},ws=[];
@@ -366,48 +448,109 @@ M4:{p:{A:'#428b9d',B:'#458ca3',C:'#498caf',D:'#b4ffd7',E:'#edfff7',F:'#384979',G
 '.AAQS.......LL',
 '.KEP..........',
 'AHTP..........',
-'PP............']}};
+'PP............']},
+myth:{p:{A:'#2a1d0d',C:'#384cbc',D:'#3c9f9c',E:'#3a7fa8',F:'#271b40',G:'#31366b',I:'#251a7e',J:'#efd8a1',L:'#2d309a'},r:[
+'........AAAA....',
+'...AAA.ACDEFGA..',
+'..GCCIFADDDCDEA.',
+'.ACDDICADJDDDDA.',
+'ACCDDCDCDJCDDDA.',
+'ACLICCDDCDICDD..',
+'ACLDDDEDCGDDFA..',
+'ACEDJJGDDDCDDEA.',
+'.AEDJJCDDDJDJDCA',
+'..GDDDCDDDJJJDCA',
+'...AGAEEEEDJJDCA',
+'...ACDDDDGDDDDCA',
+'...ACDDJDIDDDEA.',
+'....AADJDACCCG..',
+'.....ACCCA......',
+'.....AAAA.......']},
+rmyth:{p:{A:'#2a1d0d',C:'#384cbc',F:'#e9d6a1',H:'#3c9f9c',L:'#24187c'},r:[
+'...............AAAA.....',
+'...........AAAACCCCA....',
+'........AAALCCCCCCCCAA..',
+'..AAACCCCCCCCCCCCCCCCFA.',
+'.AHCCCCCCCCCCCCCCCFFFHA.',
+'.ACFFCCCCCCCCCCFFFHHHHH.',
+'ALLLCLFFFFFFFFFHHHHHHHH.',
+'ACLLLLLLFHHHHHHHHHHHHHHA',
+'ACLLLLLLFHHHHHHHHHHHHHHA',
+'AALLLLLLFHHHHHHHHHHHHAAA',
+'...AALLLFHHHHHHAAA......',
+'.....AALFHHAAAA.........',
+'.......AAAAA............']},
+ti:{p:{A:'#927e6a',B:'#2a1d0d',E:'#efb775',F:'#efd8a1',G:'#a77f4f',H:'#cbb586'},r:[
+'.........AABBBBAA.......',
+'........BABEEFFGGB......',
+'.......BEAEFFFEFFFB.....',
+'.....ABEAAEFFFFFFFHA....',
+'....ABEAEAEFFFFEFFFBA...',
+'..BBEEFHEEAEFFFAEFFEB...',
+'.AGEAEFFEFFGAEAAFFFFAB..',
+'ABEAEEFAEHHAEFFEFFFFAEBB',
+'BEEAFFGAFFFGFFFFFFFFEHGB',
+'BEFFFFEAEFFHHFFFFFFFFHFB',
+'BEEFFFEAAEAHFHFEEFFEFHFB',
+'.ABBAEAAEFFFFFHAFFFFAHFB',
+'..BEFFEAEFFEFFFAAFFFABBA',
+'..BEFFEEAEFGEEFFHBBBBBB.',
+'...BGABBGBGBAFFFFB......',
+'....AA..AAAABFFFBA......',
+'............ABBBA.......']}};
+SPR.Compact={p:Object.assign({},SPR.Iron.p,{A:'#2e3a4a',B:'#a7bdd1',C:'#eef6fc',D:'#10161e',E:'#8aa1b6',F:'#5d7186'}),r:SPR.Iron.r};
 function sprite(t){tx.clearRect(0,0,16,16);
 if(t==='Hand'){R('#2a1d0d',2,3,9,9);R('#2a1d0d',1,4,1,7);R('#d6a77a',2,4,8,7);R('#ecc9a2',2,4,8,2);R('#b07f55',2,10,8,1);R('#b07f55',4,6,1,4);R('#b07f55',6,6,1,4);R('#b07f55',8,6,1,4);R('#2a1d0d',10,5,3,6);R('#d6a77a',10,6,3,4);R('#1f7f8c',13,3,3,10);R('#2fa6b4',13,4,3,8)}
 else{var d=SPR[t]||SPR.Stone,ox=Math.round((16-d.r[0].length)/2),oy=Math.round((16-d.r.length)/2);d.r.forEach(function(row,y){for(var x=0;x<row.length;x++){var c=row.charAt(x);if(c!=='.')R(d.p[c],ox+x,oy+y,1,1)}})}}
 
 var ICPAL={"k": "#1b1410", "g": "#9a9a9a", "G": "#6f6f6f", "w": "#d6d6d6", "W": "#ffffff", "b": "#684e1e", "B": "#896727", "d": "#493615", "o": "#d8af93", "O": "#a67c60", "e": "#efd2b8", "c": "#7ef2ec", "C": "#3fb5e8", "n": "#2b6fd0", "N": "#1d3f9a", "h": "#d4fffc", "y": "#f2c230", "Y": "#b8860b", "Z": "#fff0a0", "r": "#c0392b", "R": "#ff9a2e", "f": "#ffd84a", "F": "#ff5a1f"},ICON={"coin":["..............","....kkkkkk....","...kZZyyyyk...","..kZyyZyyyyk..",".kZyZZyyyyYyk.",".kZyZyyyyyYyk.",".kyZyyyyyyyYk.",".kyyyyyyyyYYk.",".kyyyyyyyYYYk.",".kyyyyyyYYYYk.","..kyYYyYYYYk..","...kyyYYYYk...","....kkkkkk....",".............."],"a_coin":["......kk......","....kkZZkk....","...kYYYYYYk...","..kYZZfYyyYk..",".kYZZZYYyyyYk.",".kYZZyyyyyyYk.","kZYfYyfYyfYYYk","kZYYYyYYyYYYYk",".kYyyyyyyYYYk.",".kYyyyYYYYYYk.","..kYyyYYYYYk..","...kYYYYYYk...","....kkYYkk....","......kk......"],"stone":["..............",".....kkkk.....","...kkwwwgkk...","..kwwggggggk..",".kwwwgggggggk.",".kgggGgggggGk.",".kgggggggggGk.","kwwgggGGggGGGk",".kggggggggGGk.",".kgGGgggGGGGk.",".kGgggggGGggk.","..kggggGGGGk..","...kkGgGGkk...",".....kkkk....."],"iron":["....kkkkkkkk..","...keeeeeeeek.","..keeeeeeeeook",".koooooooooooO",".kooooooooOOOO",".kOOOOOOOOOOOk","..kkkkkkkkkkk.","..............","..............","..............","..............","..............","..............",".............."],"myth":["......kk......",".....kcCk.....","....kccCCk....","...kchcCCCk...","..kchhcCCCCk..",".kcchccCCCCCk.","kccccccCCCCCCk","kCCCCCCnnnnnnk",".kCCCCCnnnnnk.","..kCCCCnnnnk..","...kCCCnnnk...","....kCCnnk....",".....kCnk.....","......kk......"],"shovel":[".........kkkkk","........kwwwgg",".......kwwwggG",".......kwwggGG","......kwwggGGk","......kwggGGGk","......kggGGGk.",".....kBbkkkk..","....kBbk......","...kBbk.......","..kBbk........",".kBbk.........","kBbk..........","kbk..........."],"a_clover":["..............","...kkk..kkk...","..keeokkeeok..",".keeoooeeoook.",".keoooOeoooOk.",".koooOOoooOOk.","..koOOOooOOk..","..keeoOoeeok..",".keeooOoeoook.",".keoooOeoooOk.",".koooOOoooOOk.","..koOOOkoOOk..","...kkkOOkkk...",".....kOOk....."],"a_ring":[".....kRrk.....","....krrrrk....","....kkeekk....","...keeeeook...","..keeeeooook..",".keeeekkooook.",".keeek..koook.","keeek....koOOk","keeok....kOOOk",".koook..kOOOk.",".kooookkOOOOk.","..kooooOOOOk..","...kooOOOOk...","....kkOOkk...."],"a_amulet":[".kGk......kGk.","..kGk....kGk..","...kGk..kGk...","....kGkkGk....",".....kGGk.....",".....kyyk.....","....kyyyYk....","...kyycCYYk...","..kyychCCYYk..",".kyyChCnnnYYk.","..kyYCCnnYYk..","...kYYCnYYk...","....kYYYYk....",".....kYYk....."],"a_crystal":[".....kcCnk....",".....khCnk....","....kccCnnk...","....kccCnnk...","..kkcccCCnnk..",".kcCcccCCnnk..",".khCcccCCnnnk.","kccCcccCCnnnnk","kccCcccCCnnCnk","kccCcccCCnnCnk","kccCcccCCnnCnk","kCCnCCCnnNNnNk","kCCnCCCnnNNnNk",".kkkkkkkkkkkk."],"a_glove":["..............","..............","...kk.kk.kk...","..kwwkwwkwwk..","..kwwkwwkwwk..","..kwwkwwkwwkk.",".kkwwwwwwwwwwk","kwkwwwwwwwwwwk","kwwwwwwwwwwwGk",".kwwwwwwwwwGk.","..kwwwwwwwGGk.","..kgggggggGGk.","..kkkkkkkkkkk.",".............."],"furnace":["..............",".kkkkkkkkkkkk.",".kwggggggggGk.",".kgGgggGgggGk.",".kgggggggggGk.",".kgkkkkkkkgGk.",".kgkRRfRRkgGk.",".kgkRffffkgGk.",".kgkfRRfRkgGk.",".kgkkkkkkkgGk.",".kggggggggGGk.",".kGgGggGggGGk.",".kkkkkkkkkkkk.",".............."],"anvil":["..............",".kkkkkkkkkkkk.","kwwwggggggGGGk","kwggggggggGGGk",".kkgggggggGGk.","...kggggggGk..","....kggggGk...","....kggggGk...","....kggggGk...","...kggggggGk..","..kggggggggGk.","..kkkkkkkkkkk.","..............",".............."],"golem":["..............","..kkkkkkkkkk..",".kwgggggggggGk",".kgggGgggGgggk",".kggkkgggkkggk",".kggRRgggRRggk",".kggggggggGGgk",".kgkkkkkkkkgGk",".kggggggggGGgk","..kkgggggGGkk.","...kkkkkkkkk..","..............","..............",".............."]};
-var IKEY={pick:'Stone',ipick:'Iron',m1:'M1',m2:'M2',m3:'M3',m4:'M4'};
-function drawIcon(cv,key){var g=cv.getContext('2d'),rows,pal,d=ICON[key];g.clearRect(0,0,16,16);
+var IKEY={pick:'Stone',ipick:'Iron',cpick:'Compact',m1:'M1',m2:'M2',m3:'M3',m4:'M4'};
+delete ICON.myth;
+(function(){function dv(b,m){return ICON[b].map(function(r){return r.split('').map(function(c){return m[c]||c}).join('')})}
+var FE={g:'o',G:'O',w:'e',W:'e'},MY={g:'C',G:'n',w:'c',W:'h',o:'C',O:'n',r:'C',R:'c',F:'n',f:'h'},RF={g:'n',G:'N',w:'C',W:'h',o:'n',O:'N',r:'n',R:'C',F:'N',f:'h'};
+ICON.drill_fe=dv('furnace',FE);ICON.mine_fe=dv('anvil',FE);ICON.drill_my=dv('furnace',MY);ICON.mine_my=dv('anvil',MY);ICON.reactor_my=dv('golem',MY);ICON.fab_my=dv('golem',RF);var TI={h:'Z',c:'Z',C:'f',n:'y',N:'Y'};ICON.a_tluck=dv('a_amulet',TI);ICON.a_tspeed=dv('a_crystal',TI)})();
+function drawIcon(cv,key){var rows,pal,d=ICON[key];
 if(d){rows=d;pal=ICPAL}else if(SPR[key]){rows=SPR[key].r;pal=SPR[key].p}else return;
-var ox=Math.round((16-rows[0].length)/2),oy=Math.round((16-rows.length)/2);
+var N=Math.max(16,rows[0].length,rows.length);if(cv.width!==N){cv.width=cv.height=N}
+var g=cv.getContext('2d');g.clearRect(0,0,N,N);
+var ox=Math.round((N-rows[0].length)/2),oy=Math.round((N-rows.length)/2);
 rows.forEach(function(row,y){for(var x=0;x<row.length;x++){var c=row.charAt(x);if(c!=='.'&&pal[c]){g.fillStyle=pal[c];g.fillRect(ox+x,oy+y,1,1)}}})}
 function mkSlot(key,cls){var s=document.createElement('span');s.className='slot';var c=document.createElement('canvas');c.width=c.height=16;c.className='ico'+(cls?' '+cls:'');c.setAttribute('aria-hidden','true');s.appendChild(c);if(key)drawIcon(c,key);return s}
-var RES={c:{n:'Münzen',col:'#f2c230',h:function(){return st.coins||0}},s:{n:'Stein',col:'#927e6a',h:function(){return st.stone||0}},fe:{n:'Eisen',col:'#d8af93',h:function(){return st.iron||0}},my:{n:'Mythril',col:'#4fd6e8',h:function(){return st.myth||0}}};
+var RES={c:{n:'Münzen',col:'#f2c230',h:function(){return st.coins||0}},s:{n:'Stein',col:'#927e6a',h:function(){return st.stone||0}},fe:{n:'Eisen',col:'#d8af93',h:function(){return st.iron||0}},my:{n:'Mythril',col:'#4fd6e8',h:function(){return st.myth||0}},rf:{n:'Refined Mythril',col:'#7fd0ff',h:function(){return st.rf||0}},ti:{n:'Titanium',col:'#e9b872',h:function(){return st.ti||0}}};
 function setCost(el,c,label){var key=label+'|'+JSON.stringify(c||{});
 if(el._k!==key){el._k=key;el.innerHTML='';if(label){var t=document.createElement('span');t.className='tag';t.textContent=label;el.appendChild(t)}
-el._ch=[];if(c)['c','s','fe','my'].forEach(function(k){if(!c[k])return;var ch=document.createElement('span');ch.className='chip';ch.innerHTML='<i class="ic" style="background:'+RES[k].col+'"></i><span></span>';ch.lastChild.textContent=fmt(c[k])+' '+RES[k].n;ch._k=k;ch._n=c[k];el.appendChild(ch);el._ch.push(ch)})}
+el._ch=[];if(c)['c','s','fe','my','rf','ti'].forEach(function(k){if(!c[k])return;var ch=document.createElement('span');ch.className='chip';ch.innerHTML='<i class="ic" style="background:'+RES[k].col+'"></i><span></span>';ch.lastChild.textContent=fmt(c[k])+' '+RES[k].n;ch._k=k;ch._n=c[k];el.appendChild(ch);el._ch.push(ch)})}
 el._ch.forEach(function(ch){var ok=RES[ch._k].h()>=ch._n;ch.classList.toggle('ok',ok);ch.classList.toggle('no',!ok)})}
 var blk=document.getElementById('block'),arena=document.getElementById('arena'),stage=document.querySelector('.stage'),list=document.getElementById('list'),btns={};
 REC.forEach(function(r){
 if(r.hide)return;
 var b=document.createElement('button');b.className='rec';
 b.innerHTML='<b>'+r.n+'</b><span class="own"></span><small>'+r.d+'</small><span class="cost"></span>';b.insertBefore(mkSlot(null),b.firstChild);
-b.onclick=function(){var x=cur(r);if(x.once&&own(x)>0)return;if(!canBuy(x))return;if(x.fe)st.iron-=x.fe;else if(x.my)st.myth-=x.my;else st.stone-=cost(x);st.own[x.id]=own(x)+1;draw();save()};
+b.onclick=function(){var x=cur(r);if(x.once&&own(x)>0)return;var n=x.once?1:qtyFor(x);if(!canBuy(x,n))return;pay(costOf(x,n));st.own[x.id]=own(x)+n;draw();save()};
 list.appendChild(b);btns[r.id]=b;
 });
 
 // ---- Werkbank-Reiter (Materialien / Werkzeuge) ----
 function grp(r){return r.k?'t':'m'}
-var tabBtns={m:document.getElementById('tab-m'),t:document.getElementById('tab-t'),s:document.getElementById('tab-s'),a:document.getElementById('tab-a')},tabName={m:'Maschinen',t:'Werkzeuge',s:'Verkaufen',a:'Artefakte'},introTxt={m:'Maschinen bauen automatisch Stein ab. Jede weitere Maschine wird etwas teurer.',t:'Werkzeuge machen deine Schläge stärker. Upgrades erscheinen auf dem Knopf des Vorgängers.',s:'Tausche Ressourcen gegen Münzen. Eisen und Mythril brauchst du auch zum Craften.',a:'Kachel überfahren für Infos, anklicken zum Kaufen (am Handy: antippen, dann nochmal tippen). Mining Speed = mehr Schaden pro Schlag, Mining Luck = Extra-Ausbeute und mehr Erzblöcke.'},sellEl=document.getElementById('sell'),artEl=document.getElementById('arts');
+var qbar=document.getElementById('qbar');
+qbar.innerHTML='<span>Kaufmenge:</span>';
+[[1,'×1'],[10,'×10'],[100,'×100'],['max','Max']].forEach(function(q){var bt=document.createElement('button');bt.type='button';bt._q=q[0];bt.textContent=q[1];bt.onclick=function(){st.bq=q[0];draw();save()};qbar.appendChild(bt)});
+['t:Iron','m:furnace','f:anvil','s:coin','a:a_coin'].forEach(function(p){var k=p.split(':');drawIcon(document.getElementById('tab-'+k[0]).querySelector('.tic'),k[1])});
+drawIcon(document.getElementById('logo'),'Iron');
+var tabBtns={f:document.getElementById('tab-f'),m:document.getElementById('tab-m'),t:document.getElementById('tab-t'),s:document.getElementById('tab-s'),a:document.getElementById('tab-a')},tabName={f:'Schmiede',m:'Maschinen',t:'Werkzeuge',s:'Verkaufen',a:'Artefakte'},introTxt={f:'In der Schmiede stellst du Materialien her: Stein → Eisen → Mythril → Refined Mythril. Refined Mythril brauchst du für die Mythril-Spitzhacken ab Stufe 2.',m:'Maschinen bauen automatisch Stein, Eisen und Mythril ab (Titanium nicht). Nur die Mythril-Fabrik braucht Titanium. Jede weitere Maschine wird 15 % teurer.',t:'Werkzeuge machen deine Schläge stärker. Upgrades erscheinen auf dem Knopf des Vorgängers. Je besser die Spitzhacke, desto mehr Extra-Erz. Titanium gibt es nur per Hand und erst ab der Mythril Pickaxe (Stufe 3).',s:'Tausche Ressourcen gegen Münzen. Eisen und Mythril brauchst du auch zum Craften.',a:'Kachel überfahren für Infos, anklicken zum Kaufen (am Handy: antippen, dann nochmal tippen). Mining Speed = mehr Schaden pro Schlag, Mining Luck = Extra-Ausbeute und mehr Erzblöcke.'},sellEl=document.getElementById('sell'),forgeEl=document.getElementById('forge'),artEl=document.getElementById('arts');
 function renderTabs(){var g=st.tab||'t';REC.forEach(function(r){if(btns[r.id])btns[r.id].hidden=grp(r)!==g});
-sellEl.hidden=g!=='s';artEl.hidden=g!=='a';document.getElementById('intro').textContent=introTxt[g]||'';
-['m','t','s','a'].forEach(function(x){var on=x===g,af=false;
+sellEl.hidden=g!=='s';forgeEl.hidden=g!=='f';artEl.hidden=g!=='a';qbar.hidden=g!=='m';Array.prototype.forEach.call(qbar.querySelectorAll('button'),function(q){q.setAttribute('aria-pressed',String(q._q===(st.bq||1)))});document.getElementById('intro').textContent=introTxt[g]||'';
+['m','t','f','s','a'].forEach(function(x){var on=x===g,af=false;
 if(!on){if(x==='a')af=ART.some(artBuyable);else if(x==='m'||x==='t')af=REC.some(function(r){if(r.hide)return false;var q=cur(r);return grp(r)===x&&!(q.once&&own(q)>0)&&canBuy(q)})}
-tabBtns[x].setAttribute('aria-selected',on?'true':'false');tabBtns[x].textContent=tabName[x]+(af?' ●':'')})}
-function setTab(g){st.tab=g;renderTabs();save()}
-tabBtns.m.onclick=function(){setTab('m')};tabBtns.t.onclick=function(){setTab('t')};tabBtns.s.onclick=function(){setTab('s')};tabBtns.a.onclick=function(){setTab('a')};
+tabBtns[x].setAttribute('aria-selected',on?'true':'false');tabBtns[x].querySelector('.tl').textContent=tabName[x]+(af?' ●':'')})}
+function setTab(g){st.tab=g;draw();save()}
+tabBtns.m.onclick=function(){setTab('m')};tabBtns.f.onclick=function(){setTab('f')};tabBtns.t.onclick=function(){setTab('t')};tabBtns.s.onclick=function(){setTab('s')};tabBtns.a.onclick=function(){setTab('a')};
 
 // ---- Verkaufen ----
 var coinEl=document.createElement('div');coinEl.className='coinline';coinEl.appendChild(mkSlot('coin','sm')).className='';coinEl.firstChild.style.cssText='display:block;width:32px;height:32px';
 var coinTx=document.createElement('div');coinTx.innerHTML='<b></b><small>Münzen</small>';coinEl.appendChild(coinTx);sellEl.appendChild(coinEl);
 function sellN(r,n){var have=st[r.k]||0;if(n==='all')n=have;n=Math.min(n,have);if(n<=0)return;st[r.k]=have-n;if(st[r.k]<1e-6)st[r.k]=0;st.coins=(st.coins||0)+n*r.p;sfx('sell');draw();save()}
-var SELLICO={stone:'stone',iron:'iron',myth:'myth'};
+var SELLICO={stone:'stone',iron:'iron',myth:'myth',ti:'ti'};
 SELL.forEach(function(r){var row=document.createElement('div');row.className='sellrow';
 row.appendChild(mkSlot(SELLICO[r.k]));
 row.insertAdjacentHTML('beforeend','<b>'+r.n+'</b><small></small><small></small><div class="sellbtns"></div>');
@@ -416,6 +559,22 @@ var bw=row.querySelector('.sellbtns');r.b={};
 var sm=row.querySelectorAll('small');r.s1=sm[0];r.s2=sm[1];sellEl.appendChild(row)});
 function renderSell(){coinTx.firstChild.textContent=fmt(st.coins||0);
 SELL.forEach(function(r){var h=st[r.k]||0;r.s1.textContent='1 Stück = '+r.p+' Münzen';r.s2.textContent='Vorrat: '+fmt(h)+' (Wert: '+fmt(h*r.p)+' Münzen)';r.b[1].disabled=h<1;r.b[10].disabled=h<10;r.b.all.disabled=h<.1})}
+
+// ---- Schmiede: Materialien herstellen ----
+var FORGE=[
+{n:'Eisen pressen',from:'stone',fn:30,fName:'Stein',to:'iron',tName:'Eisen',icon:'iron'},
+{n:'Mythril verdichten',from:'iron',fn:10,fName:'Eisen',to:'myth',tName:'Mythril',icon:'myth'},
+{n:'Refined Mythril',from:'myth',fn:160,fName:'Mythril',to:'rf',tName:'Refined Mythril',icon:'rmyth'}];
+function forgeN(r,n){var have=st[r.from]||0,max=Math.floor(have/r.fn+1e-9);if(n==='all')n=max;n=Math.min(n,max);if(n<1)return;st[r.from]=Math.max(0,have-n*r.fn);st[r.to]=(st[r.to]||0)+n;sfx('sell');draw();save()}
+FORGE.forEach(function(r){var row=document.createElement('div');row.className='sellrow';row.appendChild(mkSlot(r.icon));
+row.insertAdjacentHTML('beforeend','<b>'+r.n+'</b><small></small><small></small><div class="sellbtns"></div>');
+var bw=row.querySelector('.sellbtns');r.b={};
+[[1,'×1'],[10,'×10'],['all','Max']].forEach(function(q){var bt=document.createElement('button');bt.textContent=q[1];bt.setAttribute('aria-label',r.n+': '+q[1]);bt.onclick=function(){forgeN(r,q[0])};bw.appendChild(bt);r.b[q[0]]=bt});
+var sm=row.querySelectorAll('small');r.s1=sm[0];r.s2=sm[1];forgeEl.appendChild(row)});
+function renderForge(){if(forgeEl.hidden)return;FORGE.forEach(function(r){var have=st[r.from]||0,max=Math.floor(have/r.fn+1e-9);
+r.s1.textContent=fmt(r.fn)+' '+r.fName+' = 1 '+r.tName;
+r.s2.textContent='Vorrat: '+fmt(have)+' '+r.fName+' · möglich: '+fmt(max)+'×';
+r.b[1].disabled=max<1;r.b[10].disabled=max<10;r.b.all.disabled=max<1;r.b.all.textContent=max>1?'Max ('+fmt(max)+')':'Max'})}
 
 // ---- Artefakte (Kachel-Leiste wie die Upgrades bei Cookie Clicker) ----
 // Kachel überfahren = Infofenster, anklicken = kaufen. Am Handy: erst antippen (Info), nochmal tippen = kaufen.
@@ -428,7 +587,7 @@ artEl.appendChild(artSum);artEl.appendChild(upgHead);artEl.appendChild(upgBar);
 var tip=document.createElement('div');tip.id='tip';tip.hidden=true;document.body.appendChild(tip);
 var tipA=null,selA=null,lastPtr='mouse',artOrder='';
 function artNext(a){var l=artLv(a);return l<a.lv.length?a.lv[l]:null}
-function artVal(c){return (c.c||0)+(c.s||0)+(c.fe||0)*20+(c.my||0)*100}
+function artVal(c){return (c.c||0)+(c.s||0)+(c.fe||0)*20+(c.my||0)*100+(c.ti||0)*50+(c.rf||0)*16000}
 function artSorted(){return ART.slice().sort(function(x,y){var nx=artNext(x),ny=artNext(y);if(!nx||!ny)return (nx?0:1)-(ny?0:1)||ART.indexOf(x)-ART.indexOf(y);return artVal(nx)-artVal(ny)||ART.indexOf(x)-ART.indexOf(y)})}
 function buyArt(a,quiet){var l=artLv(a);if(l>=a.lv.length)return false;var c=a.lv[l];if(!canPay(c))return false;pay(c);if(!st.art)st.art={};st.art[a.id]=l+1;if(!quiet){sfx('art');draw();save()}return true}
 function hideTip(){tip.hidden=true;tipA=null}
@@ -466,25 +625,51 @@ ARTSEC.luck.el.textContent='Gesamt +'+artPct('luck')+' % · Ø '+fmt(1+luck())+'
 renderTip()}
 
 // ---- Materialien-Tabelle ----
-var MATS=[{n:'Stein',c:'#927e6a',a:function(){return st.stone},v:function(){return fmt(st.stone)}},{n:'Eisen',c:'#d8af93',a:function(){return st.iron||0},v:function(){return fmt(st.iron||0)}},{n:'Mythril',c:'#4fd6e8',a:function(){return st.myth||0},v:function(){return fmt(st.myth||0)}},{n:'Münzen',c:'#f2c230',a:function(){return st.coins||0},v:function(){return fmt(st.coins||0)}}];
+var MATS=[{n:'Stein',c:'#927e6a',a:function(){return st.stone},v:function(){return fmt(st.stone)}},{n:'Eisen',c:'#d8af93',a:function(){return st.iron||0},v:function(){return fmt(st.iron||0)}},{n:'Mythril',c:'#4fd6e8',a:function(){return st.myth||0},v:function(){return fmt(st.myth||0)}},{n:'Refined Mythril',c:'#7fd0ff',a:function(){return st.rf||0},v:function(){return fmt(st.rf||0)}},{n:'Titanium',c:'#e9b872',a:function(){return st.ti||0},v:function(){return fmt(st.ti||0)}},{n:'Münzen',c:'#f2c230',a:function(){return st.coins||0},v:function(){return fmt(st.coins||0)}}];
 var matBody=document.querySelector('#mats tbody');
-MATS.forEach(function(m){var tr=document.createElement('tr');tr.innerHTML='<td><i class="ic" style="background:'+m.c+'"></i>'+m.n+'</td><td></td>';m.tr=tr;m.val=tr.lastChild;matBody.appendChild(tr)});
-function renderMats(){MATS.forEach(function(m){m.tr.className=m.a()>=1?'':'zero';m.val.textContent=m.v()})}
+var MK={'Stein':'stone','Eisen':'iron','Mythril':'myth','Refined Mythril':'rmyth','Titanium':'ti','Münzen':'coin'};
+MATS.forEach(function(m){var tr=document.createElement('tr');tr.innerHTML='<td><canvas class="mic" width="16" height="16"></canvas>'+m.n+'</td><td><span class="mv"></span><small class="mps"></small></td>';drawIcon(tr.querySelector('canvas'),MK[m.n]);m.tr=tr;m.val=tr.querySelector('.mv');m.ps=tr.querySelector('.mps');matBody.appendChild(tr)});
+
+// ---- Fabrikhalle: gekaufte Maschinen arbeiten sichtbar (wie die Omas bei Cookie Clicker) ----
+var fac=document.getElementById('factory'),frows=document.getElementById('frows'),FMACH=REC.filter(function(r){return !r.k}),FR={},FDIRTY=true,FUW=38,FCAP=60;
+var FANIM={furnace:'flick',anvil:'hit',golem:'sway',drill_fe:'shake',mine_fe:'hit',drill_my:'shake',mine_my:'hit',reactor_my:'pulse',fab_my:'sway'};
+var FTH={furnace:'s',anvil:'s',golem:'s',drill_fe:'i',mine_fe:'i',drill_my:'m',mine_my:'m',reactor_my:'m',fab_my:'m'};
+function iconURL(key){var c=document.createElement('canvas');c.width=c.height=16;drawIcon(c,key);return c.toDataURL()}
+FMACH.forEach(function(r){var row=document.createElement('div');row.className='frow f-'+(FTH[r.id]||'s')+' a-'+(FANIM[r.id]||'hit');row.hidden=true;
+row.innerHTML='<div class="flabel"><canvas class="ico sm" width="16" height="16" aria-hidden="true"></canvas><div><b></b><small></small></div><span class="fcount"></span></div><div class="fstage"></div>';
+row.querySelector('b').textContent=r.n;drawIcon(row.querySelector('canvas'),r.id);
+var stg=row.querySelector('.fstage');stg.style.setProperty('--ic','url('+iconURL(r.id)+')');
+FR[r.id]={el:row,stg:stg,cnt:row.querySelector('.fcount'),sub:row.querySelector('small'),n:0,units:[]};frows.appendChild(row)});
+function layoutRow(f){var w=f.stg.clientWidth||300,k=f.units.length,step=k>1?Math.min(FUW+6,(w-FUW-12)/(k-1)):0,lanes=k>8;f.units.forEach(function(u,i){u.style.left=(6+i*step)+'px';u.style.bottom=(lanes&&i%2?16:7)+'px'})}
+function renderFactory(){var any=FMACH.some(function(r){return own(r)>0});fac.hidden=!any;if(!any)return;
+FMACH.forEach(function(r){var f=FR[r.id],n=own(r);f.el.hidden=n<1;if(n<1){f.n=0;return}
+if(n!==f.n||FDIRTY){var show=Math.min(n,FCAP),grew=f.n>0&&n>f.n;
+while(f.units.length<show){var i=f.units.length,u=document.createElement('i');u.className='fu';u.style.animationDelay=(-((i*173)%900))+'ms';u.style.animationDuration=(850+((i*53)%5)*90)+'ms';u.style.zIndex=i;f.stg.appendChild(u);f.units.push(u);
+if(grew){u.classList.add('new');(function(x){setTimeout(function(){x.classList.remove('new')},700)})(u)}}
+while(f.units.length>show){f.units.pop().remove()}
+layoutRow(f);f.cnt.textContent='×'+fmt(n);
+var pr=r.s?[r.s,'Stein']:r.gi?[r.gi,'Eisen']:[r.gm,'Mythril'];f.sub.textContent='+'+fmtR(pr[0]*n)+' '+pr[1]+'/s';f.n=n}});
+FDIRTY=false;document.getElementById('ftotal').textContent=psText()?'Gesamt: '+psText()+' pro Sekunde':''}
+window.addEventListener('resize',function(){FDIRTY=true;renderFactory()});
+var MPS={'Stein':function(){return perRes('s')},'Eisen':function(){return perRes('gi')},'Mythril':function(){return perRes('gm')}};
+function renderMats(){MATS.forEach(function(m){m.tr.className=m.a()>=1?'':'zero';m.val.textContent=m.v();var q=MPS[m.n],v=q?q():0;m.ps.textContent=v?'+'+fmtR(v)+'/s':''})}
 
 function draw(){
 var d=dmgHit(),t=toolName();
-var sk=t==='Hand'?'Hand':st.own.m4>0?'M4':st.own.m3>0?'M3':st.own.m2>0?'M2':st.own.m1>0?'M1':(st.own.ipick>0?'Iron':'Stone');curTool=t;if(sk!==curSpr){curSpr=sk;sprite(sk)}
+var sk=t==='Hand'?'Hand':st.own.m4>0?'M4':st.own.m3>0?'M3':st.own.m2>0?'M2':st.own.m1>0?'M1':(st.own.cpick>0?'Compact':st.own.ipick>0?'Iron':'Stone');curTool=t;if(sk!==curSpr){curSpr=sk;sprite(sk)}
 document.getElementById('stone').textContent=fmt(st.stone)+' Stein';
 document.getElementById('total').textContent=fmt(st.total);
-renderMats();renderTabs();renderSell();renderArts();
-document.getElementById('rates').textContent=t+' · '+fmt(Math.ceil(curHP()/d*10)/10)+' Schläge pro Block\n'+fmt(curY())+(st.cu===2?' Mythril':st.cu?' Eisen':' Stein')+' pro Block · '+perSec()+' pro Sekunde'+((artPct('speed')||artPct('luck'))?'\n'+(artPct('speed')?'Tempo +'+artPct('speed')+' %':'')+((artPct('speed')&&artPct('luck'))?' · ':'')+(artPct('luck')?'Glück +'+artPct('luck')+' %':''):'');
-REC.forEach(function(r){if(r.hide)return;var b=btns[r.id],x=cur(r),c=cost(x),o=own(x),done=x.once&&o>0;
+renderMats();renderFactory();renderTabs();renderSell();renderForge();renderArts();
+document.getElementById('rates').textContent=t+' · '+fmt(Math.ceil(curHP()/d*10)/10)+' Schläge pro Block\n'+fmt(curY())+(st.cu===3?' Titanium':st.cu===2?' Mythril':st.cu?' Eisen':' Stein')+' pro Block'+(psText()?' · '+psText()+' pro Sekunde':'')+((artPct('speed')||artPct('luck'))?'\n'+(artPct('speed')?'Tempo +'+artPct('speed')+' %':'')+((artPct('speed')&&artPct('luck'))?' · ':'')+(artPct('luck')?'Glück +'+artPct('luck')+' %':''):'');
+if(oreMult()>1)document.getElementById('rates').textContent+='\nErz-Bonus ×'+fm2(oreMult());
+REC.forEach(function(r){if(r.hide)return;var b=btns[r.id],x=cur(r),o=own(x),done=x.once&&o>0,qn=x.once?1:qtyFor(x);
 if(b._n!==x.id){b._n=x.id;b.querySelector('b').textContent=x.n;b.querySelector('small').textContent=x.d;drawIcon(b.querySelector('.ico'),IKEY[x.id]||x.id)}
-var can=!done&&canBuy(x);b.disabled=!can;b.classList.toggle('done',!!done);b.classList.toggle('can',can);
+var can=!done&&canBuy(x,qn);b.disabled=!can;b.classList.toggle('done',!!done);b.classList.toggle('can',can);
 b.querySelector('.own').textContent=done?'✓':(x!==r?'⬆ Upgrade':(o?'×'+o:''));
-var need=x.fe?{fe:x.fe}:x.my?{my:x.my}:{s:c},lab=done?'Gecraftet':(!reqOk(x)?'Benötigt: '+REC.filter(function(q){return q.id===x.req})[0].n:(x!==r?'Upgrade':'Craften'));
+var sm=x.d;if(!x.k&&o>0){var pr=x.s?[x.s,'Stein']:x.gi?[x.gi,'Eisen']:[x.gm,'Mythril'];sm+=' · Gesamt +'+fmtR(pr[0]*o)+' '+pr[1]+'/s'}if(b._sm!==sm){b._sm=sm;b.querySelector('small').textContent=sm}
+var need=costOf(x,qn),lab=done?'Gecraftet':(!reqOk(x)?'Benötigt: '+REC.filter(function(q){return q.id===x.req})[0].n:(x!==r?'Upgrade':(r.k?'Craften':'Bauen'+(qn>1?' ×'+qn:''))));
 setCost(b.querySelector('.cost'),done?null:need,lab)});
-document.getElementById('hint').textContent=st.cu===2?'Ein Mythril-Block! Schlag zu.':st.cu?'Ein Eisenblock! Schlag zu.':(!st.own.m1&&(st.myth||0)>=3)?'Genug Mythril! Craft deine Fractured Mythril Pickaxe.':(own(REC[0])>0&&!st.own.ipick&&(st.iron||0)>=10)?'Genug Eisen! Rüste deine Spitzhacke auf.':(own(REC[0])===0&&st.stone>=25)?'Genug Stein! Craft deine Steinspitzhacke.':(st.total===0?'Klicke den Block, um zu schlagen.':'');
+document.getElementById('hint').textContent=st.cu===3?'Ein Titanium-Block! Gibt es nur per Hand.':st.cu===2?'Ein Mythril-Block! Schlag zu.':st.cu?'Ein Eisenblock! Schlag zu.':(!st.own.m1&&(st.myth||0)>=10)?'Genug Mythril! Craft deine Fractured Mythril Pickaxe.':(st.own.m1&&!st.own.m2&&(st.rf||0)<1&&(st.myth||0)>=160)?'Genug Mythril! Stelle in der Schmiede Refined Mythril her.':(own(REC[0])>0&&!st.own.ipick&&(st.iron||0)>=10)?'Genug Eisen! Rüste deine Spitzhacke auf.':(own(REC[0])===0&&st.stone>=25)?'Genug Stein! Craft deine Steinspitzhacke.':(st.total===0?'Klicke den Block, um zu schlagen.':'');
 }
 var lastSave=0;
 function save(){var n=Date.now();if(n-lastSave<1500)return;lastSave=n;try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
@@ -513,7 +698,7 @@ if(pc.width!==stage.clientWidth||pc.height!==stage.clientHeight){pc.width=stage.
 var w=t.w*t.sc*k,h=t.h*t.sc*k,x0=br.left-sr.left+(br.width-w)/2,y0=br.top-sr.top+240*k-h,cols=texCols(i),gy=y0+h+4*k,cx=x0+w/2;
 // Wie in Minecraft: Partikel lösen sich aus Pixeln des Blocks und fallen nach unten
 for(var j=0;j<n&&parts.length<150;j++){var q=cols[Math.floor(Math.random()*cols.length)],f=.75+Math.random()*.4,c;
-if(cu)c=(cu===2?MYC:CUC)[Math.floor(Math.random()*CUC.length)];
+if(cu)c=(cu===3?TIC:cu===2?MYC:CUC)[Math.floor(Math.random()*CUC.length)];
 else c='rgb('+Math.min(255,q[0]*f|0)+','+Math.min(255,q[1]*f|0)+','+Math.min(255,q[2]*f|0)+')';
 var ppx=x0+q[3]*s,ppy=y0+q[4]*s,dir=ppx<cx?-1:1;
 parts.push({x:ppx,y:ppy,vx:(dir*(30+Math.random()*90)+(Math.random()-.5)*60)*k*(big?1.4:1),vy:-Math.random()*(big?200:110)*k,g:1100*k,gy:gy+Math.random()*6*k,sz:Math.max(5,Math.round(s*(.65+Math.random()*.4))),c:c,l:.9+Math.random()*.5})}
@@ -551,15 +736,15 @@ if(!raf){lastT=performance.now();raf=requestAnimationFrame(tick)}}
 function breakAnim(){if(RM)return;var s=px();blk.animate([{opacity:0,easing:ST},{opacity:0,offset:.72,easing:ST},{opacity:1,transform:'translateY(-'+3*s+'px)',offset:.72,easing:ST},{opacity:1,transform:'translateY(-'+s+'px)',offset:.86,easing:ST},{opacity:1,transform:'none'}],{duration:700})}
 
 function pop(t,cls){var sr=stage.getBoundingClientRect(),br=blk.getBoundingClientRect(),s=document.createElement('span');s.className='pop'+(cls?' '+cls:'');s.textContent=t;s.style.top=(br.top-sr.top+br.height/2-10)+'px';stage.appendChild(s);s.style.left=(br.left-sr.left+br.width/2-s.offsetWidth/2)+'px';setTimeout(function(){s.remove()},850)}
-function show(){if(loaded<TEX.length)return;var c=!!st.cu;drawTex(cvS,st.t,0);if(c)drawTex(cvC,curT(),st.cu===2?2:1);cvS.style.display=c?'none':'block';cvC.style.display=c?'block':'none';blk.classList.toggle('cu',c);blk.classList.toggle('my',st.cu===2);cracks(st.dmg/curHP())}
+function show(){if(loaded<TEX.length)return;var c=!!st.cu;drawTex(cvS,st.t,0);if(c)drawTex(cvC,curT(),st.cu===3?3:st.cu===2?2:1);cvS.style.display=c?'none':'block';cvC.style.display=c?'block':'none';blk.classList.toggle('cu',c);blk.classList.toggle('my',st.cu===2);blk.classList.toggle('ti',st.cu===3);cracks(st.dmg/curHP())}
 var bonusEx=0;
 function hit(){
 bonusEx=0;st.dmg+=dmgHit();var broke=st.dmg>=curHP(),wasCu=st.cu||0,y=curY(),oT=curT();
-if(broke){st.dmg=0;var lk=luck(),ex=Math.floor(lk)+(Math.random()<lk%1?1:0);y=y*(1+ex);bonusEx=ex;if(wasCu){if(wasCu===2)st.myth=(st.myth||0)+y;else st.iron=(st.iron||0)+y;st.cu=0;st.t=pickT()}else{st.stone+=y;st.total+=y;var rr=Math.random();if(rr<oreCh()){st.cu=rr<myCh()?2:1;st.ct=Math.floor(Math.random()*TEX.length)}else st.t=pickT()}}
-sfx(broke?(wasCu===2?'mybreak':wasCu?'cubreak':'break'):(wasCu===2?'my':wasCu?'cu':'hit'));
+if(broke){st.dmg=0;var lk=luck(),ex=Math.floor(lk)+(Math.random()<lk%1?1:0);y=y*(1+ex);bonusEx=ex;if(wasCu){if(wasCu===3)st.ti=(st.ti||0)+y;else if(wasCu===2)st.myth=(st.myth||0)+y;else st.iron=(st.iron||0)+y;st.cu=0;st.t=pickT()}else{st.stone+=y;st.total+=y;var rr=Math.random();if(rr<oreCh()){st.cu=rr<tiCh()?3:rr<tiCh()+myCh()?2:1;st.ct=Math.floor(Math.random()*TEX.length)}else st.t=pickT()}}
+sfx(broke?(wasCu>=2?'mybreak':wasCu?'cubreak':'break'):(wasCu>=2?'my':wasCu?'cu':'hit'));
 swing();draw();save();
 setTimeout(function(){impact(broke,wasCu,oT);cracks(st.dmg/curHP());
-if(broke){breakAnim();var bx=bonusEx;pop((wasCu?'+'+fmt(y)+(wasCu===2?' Mythril':' Eisen'):'+'+fmt(y)+' Stein')+(bx?' · Glück ×'+(1+bx):''),bx?'lucky':'');setTimeout(show,RM?0:200)}},RM?0:90);
+if(broke){breakAnim();var bx=bonusEx;pop((wasCu?'+'+fmt(y)+(wasCu===3?' Titanium':wasCu===2?' Mythril':' Eisen'):'+'+fmt(y)+' Stein')+(bx?' · Glück ×'+(1+bx):''),bx?'lucky':'');setTimeout(show,RM?0:200)}},RM?0:90);
 }
 // Gedrückt halten = dauerhaft abbauen (Maus, Touch, Stift)
 var holdT=null;
@@ -571,7 +756,7 @@ blk.addEventListener('contextmenu',function(e){e.preventDefault()});
 // Tastatur (Enter/Leertaste) löst nur click ohne Zeiger aus
 blk.addEventListener('click',function(e){if(e.detail===0)hit()});
 
-setInterval(function(){var s=perSec();if(s){st.stone+=s/10;st.total+=s/10;draw();save()}},100);
+setInterval(function(){var a=perRes('s'),b=perRes('gi'),m=perRes('gm');if(a||b||m){st.stone+=a/10;st.total+=a/10;st.iron=(st.iron||0)+b/10;st.myth=(st.myth||0)+m/10;draw();save()}},100);
 document.getElementById('reset').onclick=function(){
 if(confirm('Wirklich alles zurücksetzen?')){st={stone:0,total:0,dmg:0,own:{},art:{},coins:0,t:2};try{localStorage.removeItem(KEY)}catch(e){}show();draw()}
 };
@@ -580,3 +765,4 @@ show();draw();
 })();
 </script>
 </body>
+</html>
